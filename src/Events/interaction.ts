@@ -22,7 +22,6 @@ module.exports = {
 
         client.interaction = interaction
 
-        // @ts-ignore
         await command.execute(client);
 
         await client.logger("Command", interaction.commandName, ` user : ${user.tag} in guild : ${guild?.name}`)

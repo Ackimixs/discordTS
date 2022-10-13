@@ -1,14 +1,17 @@
+import {ApplicationCommandOption} from "discord.js";
+import { Bot } from "src/Structures/Bot";
+
 export interface Command {
     name: string,
     description: string,
     category: string,
     options?: CommandOption[],
 
-    execute: Promise<void>
+    execute (client: Bot): Promise<void>
 }
 
 export interface CommandOption {
-    type: number,
+    type: ApplicationCommandOption,
     name: string,
     description: string,
     require: boolean,

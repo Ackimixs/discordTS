@@ -6,6 +6,7 @@ module.exports = async (client: Bot) => {
 
     const commandFiles = fs.readdirSync(`./dist/Commands/`).filter(file => (file.endsWith('.js')));
 
+
     const CommandsArray: ApplicationCommandDataResolvable[] = []
 
     commandFiles.map(async (file) => {
@@ -17,13 +18,13 @@ module.exports = async (client: Bot) => {
         CommandsArray.push(command);
     })
 
-    client.on('ready', async () => {
+
+    client.once('ready', async () => {
 
         const guilds = await client.guilds.fetch();
         guilds.forEach(guild => {
             client.guilds.fetch(guild.id).then(guild => guild.commands.set(CommandsArray));
         })
-
     })
 
 }

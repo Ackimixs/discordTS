@@ -7,6 +7,6 @@ module.exports = {
 
 
     async execute(client: Bot) {
-        await client?.Reply("Command", "✅", "Pong", true);
+        return client?.Reply("Ping", "✅", `The current ping is \`${client.ws.ping} ms\``, true);
     }
 }

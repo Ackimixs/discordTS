@@ -10,7 +10,7 @@ module.exports = async (client) => {
         await client.commands.set(command.name, command);
         CommandsArray.push(command);
     });
-    client.on('ready', async () => {
+    client.once('ready', async () => {
         const guilds = await client.guilds.fetch();
         guilds.forEach(guild => {
             client.guilds.fetch(guild.id).then(guild => guild.commands.set(CommandsArray));

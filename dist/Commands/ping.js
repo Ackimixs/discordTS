@@ -5,6 +5,6 @@ module.exports = {
     description: "Display the ping",
     category: "Information",
     async execute(client) {
-        await client?.Reply("Command", "✅", "Pong", true);
+        return client?.Reply("Ping", "✅", `The current ping is \`${client.ws.ping} ms\``, true);
     }
 };
