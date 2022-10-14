@@ -5,7 +5,7 @@ module.exports = {
     name: 'interactionCreate',
     once: false,
     async execute(interaction, client) {
-        const { user, guild, commandName, member, type } = interaction;
+        const { user, guild, commandName, type } = interaction;
         if (type !== discord_js_1.InteractionType.ApplicationCommand)
             return;
         const command = client.commands.get(commandName);

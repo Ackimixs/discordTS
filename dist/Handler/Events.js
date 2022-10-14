@@ -7,10 +7,10 @@ module.exports = async (client) => {
     eventFiles.forEach(file => {
         const event = require(`../Events/${file}`);
         if (event.once) {
-            client.once(event.name, (...args) => event.execute(...args, client));
+            client.once(event.name, async (...args) => await event.execute(...args, client));
         }
         else {
-            client.on(event.name, (...args) => event.execute(...args, client));
+            client.on(event.name, async (...args) => await event.execute(...args, client));
         }
     });
 };

@@ -9,7 +9,17 @@ const { Bot } = require('./Structures/Bot');
 (async () => {
     const config = {
         token: process.env.BOT_TOKEN,
-        color: "Random"
+        color: "Random",
+        channel: {
+            logChannel: {
+                id: "1020658285474500648",
+                channel: null
+            },
+            ErrorChannel: {
+                id: '1020658285474500648',
+                channel: null
+            }
+        }
     };
     const client = new Bot({
         intents: [GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.Guilds, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildScheduledEvents, GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessageTyping, GatewayIntentBits.DirectMessageReactions, GatewayIntentBits.MessageContent],

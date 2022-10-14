@@ -9,7 +9,7 @@ module.exports = {
 
     async execute(interaction: CommandInteraction, client: Bot) {
 
-        const { user, guild, commandName, member, type} = interaction
+        const { user, guild, commandName, type} = interaction
 
         if (type !== InteractionType.ApplicationCommand) return;
 

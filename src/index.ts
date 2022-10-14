@@ -10,7 +10,17 @@ const { Bot } = require('./Structures/Bot');
 
     const config: Config = {
         token: process.env.BOT_TOKEN as string,
-        color: "Random"
+        color: "Random",
+        channel: {
+            logChannel: {
+                id: "1020658285474500648",
+                channel: null
+            },
+            ErrorChannel: {
+                id: '1020658285474500648',
+                channel: null
+            }
+        }
     }
 
     const client = new Bot({
