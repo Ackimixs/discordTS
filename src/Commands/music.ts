@@ -1,3 +1,4 @@
+import { QueueRepeatMode } from "discord-player";
 import { ApplicationCommandOptionType, GuildResolvable } from "discord.js";
 import { Bot } from "src/Structures/Bot";
 
@@ -64,6 +65,11 @@ module.exports = {
             type: ApplicationCommandOptionType.Subcommand,
             name: "clear",
             description: "clear the queue"
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "testing",
+            description: "do not publish that"
         },
         {
             type: ApplicationCommandOptionType.Subcommand,
@@ -160,6 +166,37 @@ module.exports = {
                     name: "enable",
                     description: "enable or disable the filter",
                     required: true
+                }
+            ]
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "loop",
+            description: "Set a loop mode",
+            options: [
+                {
+                    type: ApplicationCommandOptionType.Integer,
+                    name: "type",
+                    description: "type of loop mode",
+                    required: true,
+                    choices: [
+                        {
+                            name: 'Off',
+                            value: QueueRepeatMode.OFF
+                        },
+                        {
+                            name: 'Track',
+                            value: QueueRepeatMode.TRACK
+                        },
+                        {
+                            name: 'Queue',
+                            value: QueueRepeatMode.QUEUE
+                        },
+                        {
+                            name: 'Autoplay',
+                            value: QueueRepeatMode.AUTOPLAY
+                        }
+                    ]
                 }
             ]
         },

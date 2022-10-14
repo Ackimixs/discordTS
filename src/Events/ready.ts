@@ -7,7 +7,8 @@ module.exports = {
     once: true,
 
     async execute(client: Bot) {
-        
+        console.clear()
+
         await client.logger("Event", "Ready", `Discord Bot log as ${client?.user?.tag || "no name"}`)
 
 

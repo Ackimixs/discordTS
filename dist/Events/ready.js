@@ -7,8 +7,9 @@ module.exports = {
     name: "ready",
     once: true,
     async execute(client) {
+        console.clear();
         await client.logger("Event", "Ready", `Discord Bot log as ${client?.user?.tag || "no name"}`);
-        const activityName = ["made with ♡", "trying to be correct", "UwU", "inspired by Androz2091 discord bot", "made with ♡", "trying to be correct", "UwU"];
+        const activityName = ["made with ♡", "trying to be correct", "inspired by Androz2091 discord bot", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct"];
         await client.user?.setPresence({ activities: [{ name: "starting..." }], status: "dnd" });
         let status;
         let activity;

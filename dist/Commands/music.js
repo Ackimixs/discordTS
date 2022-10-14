@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const discord_player_1 = require("discord-player");
 const discord_js_1 = require("discord.js");
 module.exports = {
     name: "music",
@@ -62,6 +63,11 @@ module.exports = {
             type: discord_js_1.ApplicationCommandOptionType.Subcommand,
             name: "clear",
             description: "clear the queue"
+        },
+        {
+            type: discord_js_1.ApplicationCommandOptionType.Subcommand,
+            name: "testing",
+            description: "do not publish that"
         },
         {
             type: discord_js_1.ApplicationCommandOptionType.Subcommand,
@@ -157,6 +163,37 @@ module.exports = {
                     name: "enable",
                     description: "enable or disable the filter",
                     required: true
+                }
+            ]
+        },
+        {
+            type: discord_js_1.ApplicationCommandOptionType.Subcommand,
+            name: "loop",
+            description: "Set a loop mode",
+            options: [
+                {
+                    type: discord_js_1.ApplicationCommandOptionType.Integer,
+                    name: "type",
+                    description: "type of loop mode",
+                    required: true,
+                    choices: [
+                        {
+                            name: 'Off',
+                            value: discord_player_1.QueueRepeatMode.OFF
+                        },
+                        {
+                            name: 'Track',
+                            value: discord_player_1.QueueRepeatMode.TRACK
+                        },
+                        {
+                            name: 'Queue',
+                            value: discord_player_1.QueueRepeatMode.QUEUE
+                        },
+                        {
+                            name: 'Autoplay',
+                            value: discord_player_1.QueueRepeatMode.AUTOPLAY
+                        }
+                    ]
                 }
             ]
         },

@@ -7,7 +7,8 @@ module.exports = async (client, queue) => {
         return await client.Reply(`Command ${client.interaction?.options.getSubcommand()}`, "❌", "I don't find music on your channel sorry", true);
     }
     const query = options.getString("name");
-    const index = options.getInteger("index");
+    let index = options.getInteger("index");
+    index--;
     if (index < 0) {
         return await client.Reply(`Command ${client.interaction?.options.getSubcommand()}`, "❌", "Please put a valid number (0 - n)", true);
     }
