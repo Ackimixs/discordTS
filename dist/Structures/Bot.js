@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bot = void 0;
 const discord_js_1 = require("discord.js");
 const discord_player_1 = require("discord-player");
+const getGuild_1 = require("./db/getGuild");
+const embed_1 = require("../utils/embed");
 const consola = require('consola');
 class Bot extends discord_js_1.Client {
     commands;
@@ -17,17 +19,29 @@ class Bot extends discord_js_1.Client {
         this.player = new discord_player_1.Player(this);
     }
     async Reply(title, emoji, content, ephemeral = false) {
-        const embed = new discord_js_1.EmbedBuilder()
-            .setColor(this.config.color).setDescription(emoji + ' | ' + content).setTitle(title).setTimestamp().setFooter({ text: `Made with ♡ by an other guys`, iconURL: this.user?.avatarURL() });
-        await this.interaction?.reply({ embeds: [embed], ephemeral: ephemeral });
+        const e = await (0, embed_1.createEmbed)(this);
+        e.setDescription(emoji + ' | ' + content).setTitle(title);
+        await this.interaction?.reply({ embeds: [e], ephemeral: ephemeral });
     }
     async editReply(title, emoji, content) {
-        const embed = new discord_js_1.EmbedBuilder()
-            .setColor(this.config.color).setDescription(emoji + ' | ' + content).setTitle(title).setTimestamp().setFooter({ text: `Made with ♡ by an other guys`, iconURL: this.user?.avatarURL() });
-        await this.interaction?.editReply({ embeds: [embed] });
+        const e = await (0, embed_1.createEmbed)(this);
+        e.setDescription(emoji + ' | ' + content).setTitle(title);
+        await this.interaction?.editReply({ embeds: [e] });
     }
-    async logger(type, name, description) {
+    async logger(type, name, description, guild = null) {
         consola.success(`[${type}][${name}] ${description}`);
+        if (!guild)
+            return;
+        const guildDB = await (0, getGuild_1.getGuild)(guild.id);
+        const channelId = guildDB.logChannel?.id;
+        if (!channelId)
+            return;
+        const channel = await this.channels.fetch(channelId);
+        if (!channel || !channel?.isTextBased())
+            return;
+        const e = await (0, embed_1.createEmbed)(this);
+        e.setTitle(`Log | type : ${type}`).setDescription(`${name} | ${description}`);
+        await channel.send({ embeds: [e] });
     }
 }
 exports.Bot = Bot;

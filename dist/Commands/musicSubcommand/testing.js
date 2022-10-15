@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const discord_player_1 = require("discord-player");
 module.exports = async (client, queue) => {
     if (!client.interaction)
         return;
@@ -31,14 +32,15 @@ module.exports = async (client, queue) => {
     if (!tracks || !tracks.tracks.length)
         return await client.Reply("Music command", "❌", `that can't be deleted`, true);
     tracks.playlist ? queue.addTracks(tracks.tracks) : queue.addTrack(tracks.tracks[0]);
-    if (!queue.playing) {
-        await queue.play();
-    }
     queue.shuffle();
     await queue.setFilters({
         normalizer: true,
         bassboost_low: true
     });
+    if (!queue.playing) {
+        await queue.play();
+    }
+    queue.setRepeatMode(discord_player_1.QueueRepeatMode.QUEUE);
     queue.skip();
-    await client.interaction.reply({ content: "You want to play lets play", ephemeral: true });
+    return client.Reply("Oops", "👹", "You want to play lets play", true);
 };

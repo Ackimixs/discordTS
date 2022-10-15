@@ -54,7 +54,6 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     queue.setRepeatMode(QueueRepeatMode.QUEUE);
 
     queue.skip()
-
-    await client.interaction.reply({content: "You want to play lets play", ephemeral: true});
+    return client.Reply("Oops", "👹", "You want to play lets play", true);
 
 }

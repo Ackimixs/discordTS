@@ -1,20 +1,9 @@
-import { Channel, ColorResolvable} from "discord.js";
+import { ColorResolvable} from "discord.js";
+import { GuildBot } from "src/Structures/db/Schema/Guild";
 
 export interface Config {
-    token: String,
-    color: ColorResolvable,
-
-
-
-    //TODO mutli guild purpose
-    channel: {
-        logChannel: {
-            id?: string,
-            channel?: Channel | null
-        }
-        ErrorChannel: {
-            id?: string,
-            channel?: Channel | null
-        }
-    }
+    token: string,
+    mongoUri: string,
+    color: ColorResolvable
+    Guild: Map<string, GuildBot>
 }

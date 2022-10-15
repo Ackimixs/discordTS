@@ -1,14 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
+const embed_1 = require("../utils/embed");
 module.exports = {
     name: "connectionError",
     async execute(queue, error, client) {
-        const ErrorChannel = client.config.channel.ErrorChannel.channel || await client.channels.fetch(client.config.channel.ErrorChannel.id);
-        if (!ErrorChannel || !ErrorChannel.isTextBased())
+        const guild = await client.config.Guild.get(queue.guild.id);
+        const channel = await client.channels.fetch(guild?.errorChannel?.id);
+        if (!channel || !channel.isTextBased())
             return;
-        const embed = new discord_js_1.EmbedBuilder().setTitle("Music error connection").setDescription('```' + error + "```").setColor(client.config.color).setTimestamp();
-        await ErrorChannel.send({ embeds: [embed] });
+        const embed = await (0, embed_1.createEmbed)(client);
+        embed.setTitle("Music connection error").setDescription('```' + error + "```").setColor(client.config.color).setTimestamp();
+        await channel.send({ embeds: [embed] });
         throw error;
     }
 };

@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab809d31-46fc-41bf-b2ea-f4aeb364a6d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/Commands/musicSubcommand/testing.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/Commands/musicSubcommand/testing.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Events/ready.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Events/ready.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +29,7 @@
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "/home/acki/WebstormProjects/newbotsave",
     "settings.editor.selected.configurable": "com.microsoft.alm.plugin.idea.common.ui.settings.TeamServicesConfigurable",
+    "ts.external.directory.path": "/home/acki/WebstormProjects/discordTP/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -38,6 +42,8 @@
       <option name="presentableId" value="Default" />
       <updated>1665691080169</updated>
       <workItem from="1665691082702" duration="30000" />
+      <workItem from="1665778808129" duration="14000" />
+      <workItem from="1665779971810" duration="4000" />
     </task>
     <servers />
   </component>

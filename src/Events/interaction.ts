@@ -24,6 +24,6 @@ module.exports = {
 
         await command.execute(client);
 
-        await client.logger("Command", interaction.commandName, ` user : ${user.tag} in guild : ${guild?.name}`)
+        await client.logger("Command", interaction.commandName, ` user : ${user.tag} in guild : ${guild?.name}`, guild)
     }
 }

@@ -1,26 +1,25 @@
 import * as fs from "fs";
+import mongoose from "mongoose";
 import { Config } from "./interface/config";
+import {GuildBot} from "./Structures/db/Schema/Guild";
 
 const { GatewayIntentBits } = require("discord-api-types/v10");
 const { Partials, Collection } = require("discord.js");
 const { Channel, GuildMember, Message, Reaction, ThreadMember, User, GuildScheduledEvent } = Partials;
 const { Bot } = require('./Structures/Bot');
+const validEnv = require('./utils/validEnv');
 
 (async () => {
 
+    if (!validEnv()) {
+        throw new Error('Env is not valid')
+    }
+
     const config: Config = {
         token: process.env.BOT_TOKEN as string,
+        mongoUri: process.env.DATABASE_URL as string,
         color: "Random",
-        channel: {
-            logChannel: {
-                id: "1020658285474500648",
-                channel: null
-            },
-            ErrorChannel: {
-                id: '1020658285474500648',
-                channel: null
-            }
-        }
+        Guild: new Map<string, GuildBot>()
     }
 
     const client = new Bot({
@@ -40,6 +39,11 @@ const { Bot } = require('./Structures/Bot');
         require(`./Handler/${file}`)(client)
     })
 
+    await mongoose.connect(client.config.mongoUri, {
+        // @ts-ignore
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
 
-    await client.login(process.env.BOT_TOKEN)
+    await client.login(client.config.token)
 })()

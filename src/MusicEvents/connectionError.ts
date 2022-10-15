@@ -1,19 +1,22 @@
 import {Queue} from "discord-player";
-import { EmbedBuilder, TextBasedChannel } from "discord.js";
-import { Bot } from "src/Structures/Bot";
+import { Bot } from "../Structures/Bot";
+import { createEmbed } from "../utils/embed";
 
 module.exports = {
     name: "connectionError",
 
     async execute(queue: Queue, error: Error, client: Bot) {
 
-        const ErrorChannel = client.config.channel.ErrorChannel.channel || await client.channels.fetch(client.config.channel.ErrorChannel.id as string) as TextBasedChannel
+        const guild = await client.config.Guild.get(queue.guild.id)
 
-        if (!ErrorChannel || !ErrorChannel.isTextBased()) return;
+        const channel = await client.channels.fetch(guild?.errorChannel?.id as string)
 
-        const embed = new EmbedBuilder().setTitle("Music error connection").setDescription('```' + error + "```").setColor(client.config.color).setTimestamp()
+        if (!channel || !channel.isTextBased()) return;
 
-        await ErrorChannel.send({embeds: [embed]});
+        const embed = await createEmbed(client)
+        embed.setTitle("Music connection error").setDescription('```' + error + "```").setColor(client.config.color).setTimestamp()
+
+        await channel.send({embeds: [embed]});
 
         throw error;
     }
