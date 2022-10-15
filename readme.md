@@ -1,6 +1,6 @@
 ### Acki discord bot
 
-An other discord bot made with [discord.js](https://github.com/discordjs/discord.js)
+An other discord bot made with [discord.js](https://github.com/discordjs/discord.js)  
 Inspired by [androz discord bot](https://github.com/Androz2091/discord-music-bot)
 the bot have a multi guild system with mongodb, music system, logs system
 
@@ -17,14 +17,14 @@ DATABASE_URL="your mango db uri"
 
 rename the file as `.env`
 
-after run `npm run build` to build javascript projet\n
+after run `npm run build` to build javascript projet
 finaly run `npm run start` to start the bot
 
 ## How that work
 the bot is build using [discord.js](https://github.com/discordjs/discord.js) librarie and [discord-player](https://github.com/Androz2091/discord-player) for the music part
-the bot use a mongo database for logs system and multi-guilds purpose  
+the bot use a mongo database for logs system and multi-guilds purpose
 
 
 ## Warning
-i'm jsust a fucking junior dev so you have any issue please tell\n
+i'm jsust a fucking junior dev so you have any issue please tell
 (Ps: it's only the first version and the bot is not finish)
