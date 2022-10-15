@@ -29,6 +29,7 @@ the bot use a mongo database for logs system and multi-guilds purpose
 ## Warning
 I'm just a fucking junior dev, so if you have any issue please tell  
 (Ps: it's only the first version and the bot is not finish)  
+i've some problem with all play command (spotify, insert and play)  
 
 ## How to have every .env key
 [discord bot token](https://discord.com/developers/applications)  
