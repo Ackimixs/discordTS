@@ -16,7 +16,7 @@ DATABASE_URL="your mango db uri"
 ```
 
 rename the file as `.env`
-First of all run `npm install`  
+First of all run `npm install`
 after run `npm run build` to build javascript projet  
 finaly run `npm run start` to start the bot  
 
