@@ -3,7 +3,8 @@ import { GuildBot } from "src/Structures/db/Schema/Guild";
 
 export interface Config {
     token: string,
-    spotifyToken: string,
+    spotifyCLientId: string,
+    spotifySecret: string,
     mongoUri: string,
     color: ColorResolvable
     Guild: Map<string, GuildBot>

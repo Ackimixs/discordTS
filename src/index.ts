@@ -17,8 +17,9 @@ const validEnv = require('./utils/validEnv');
 
     const config: Config = {
         token: process.env.BOT_TOKEN as string,
-        spotifyToken: process.env.SPOTIFY_TOKEN as string,
-        mongoUri: process.env.DATABASE_URL as string,
+        spotifyCLientId: process.env.SPOTIFY_CLIENTID as string,
+        spotifySecret: process.env.SPOTIFY_SECRET as string,
+        mongoUri: process.env.DATABASE_URI as string,
         color: "Random",
         Guild: new Map<string, GuildBot>()
     }

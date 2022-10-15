@@ -12,7 +12,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
     await client.interaction?.deferReply();
 
-    const spotifyClient = new Spotify.Client({ token: { clientID: '8f083fb07889482cba90c3d7a1715fc3', clientSecret: 'cc281b5f5b184c08be831a59bc3391b7' } });
+    const spotifyClient = new Spotify.Client({ token: { clientID: client.config.spotifyCLientId, clientSecret: client.config.spotifySecret } });
 
     const query = options.getString('name') as string
 
