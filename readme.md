@@ -16,9 +16,9 @@ DATABASE_URL="your mango db uri"
 ```
 
 rename the file as `.env`
-
-after run `npm run build` to build javascript projet
-finaly run `npm run start` to start the bot
+First of all run `npm install`  
+after run `npm run build` to build javascript projet  
+finaly run `npm run start` to start the bot  
 
 ## How that work
 the bot is build using [discord.js](https://github.com/discordjs/discord.js) librarie and [discord-player](https://github.com/Androz2091/discord-player) for the music part
