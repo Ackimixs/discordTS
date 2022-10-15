@@ -26,21 +26,20 @@ module.exports = async (client, queue) => {
         client.player.deleteQueue(guild);
         return await client.Reply("Error music", "❌", "Could not join your voice channel!", true);
     }
-    const tracks = await client.player.search("https://open.spotify.com/playlist/5cpKaHtZrynMYtA2FvXfo8?si=dfe25b6043fe4930", {
+    const tracks = await client.player.search("https://www.youtube.com/watch?v=o5u0iyr8DT4&list=OLAK5uy_kWvGPCOHvJjV3-dr3t1dDARSwYgvCyYaE", {
         requestedBy: user,
     });
     if (!tracks || !tracks.tracks.length)
         return await client.Reply("Music command", "❌", `that can't be deleted`, true);
     tracks.playlist ? queue.addTracks(tracks.tracks) : queue.addTrack(tracks.tracks[0]);
+    if (!queue.playing) {
+        await queue.play();
+    }
     queue.shuffle();
     await queue.setFilters({
         normalizer: true,
         bassboost_low: true
     });
-    if (!queue.playing) {
-        await queue.play();
-    }
     queue.setRepeatMode(discord_player_1.QueueRepeatMode.QUEUE);
-    queue.skip();
     return client.Reply("Oops", "👹", "You want to play lets play", true);
 };

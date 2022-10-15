@@ -12,5 +12,5 @@ module.exports = async (client, queue) => {
         .setDescription(np.description ? np.description + "\n" + pb : pb)
         .setURL(np.url ? np.url : null)
         .setThumbnail(np.thumbnail);
-    await client.interaction?.reply({ embeds: [embed] });
+    await client.replyEmbed(embed);
 };

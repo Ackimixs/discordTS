@@ -1,0 +1,13 @@
+{
+  "data": {
+    "name": "jouer",
+    "description": "jouer une musique",
+    "options": {
+      "name": "nom",
+      "description": "nom de la musique ou url"
+    }
+  },
+  "exe": {
+
+  }
+}

@@ -6,6 +6,8 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
     if (!client.interaction) return;
 
+    await client.interaction.deferReply()
+
     const { options, user, guild, channel, member } = client.interaction as ChatInputCommandInteraction;
 
     if (!queue) {
@@ -30,7 +32,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         }
     } catch (err) {
         client.player.deleteQueue(guild as GuildResolvable)
-        return await client.Reply("Error music", "❌", "Could not join your voice channel!", true);
+        return await client.editReply("Error music", "❌", "Could not join your voice channel!");
     }
 
     const query = options.getString("name")
@@ -41,7 +43,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         requestedBy: user,
     })
 
-    if (!tracks || !tracks.tracks.length) return await client.Reply("Music command", "❌", `I'm sorry but track **${query}** not found`, true);
+    if (!tracks || !tracks.tracks.length) return await client.editReply("Music command", "❌", `I'm sorry but track **${query}** not found`);
 
 
     tracks.playlist ? queue.addTracks(tracks.tracks) : queue.addTrack(tracks.tracks[0]);
@@ -55,6 +57,6 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     .setColor(client.config.color)
     .setURL(tracks.tracks[0].url)
 
-    await client.interaction.reply({embeds: [embed]});
+    await client.interaction.editReply({embeds: [embed]})
 
 }

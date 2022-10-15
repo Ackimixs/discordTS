@@ -43,10 +43,8 @@ module.exports = {
 
         guildsBot.forEach(guild => {
             if (!client.config.Guild?.has(guild.id)) {
-                client.config.Guild?.set(guild.id, {guildId: guild.id});
-                createGuild(guild.id);
+                createGuild(guild.id, client);
             }
         })
-
     }
 }

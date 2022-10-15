@@ -14,6 +14,7 @@ import {Player} from "discord-player";
 import {getGuild} from "./db/getGuild";
 import { GuildBot } from "./db/Schema/Guild";
 import { createEmbed } from "../utils/embed";
+import * as fs from "fs";
 const consola = require('consola')
 
 export class Bot extends Client {
@@ -34,14 +35,30 @@ export class Bot extends Client {
         const e = await createEmbed(this)
         e.setDescription(emoji + ' | ' + content).setTitle(title)
 
-        await this.interaction?.reply({ embeds: [e], ephemeral: ephemeral});
+        try {
+            await this.interaction?.reply({ embeds: [e], ephemeral: ephemeral});
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     async editReply(title: string, emoji: string ,content: string): Promise<void> {
         const e = await createEmbed(this)
         e.setDescription(emoji + ' | ' + content).setTitle(title)
 
-        await this.interaction?.editReply({ embeds: [e]});
+        try {
+            await this.interaction?.reply({ embeds: [e]});
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async replyEmbed(embed: EmbedBuilder): Promise<void> {
+        try {
+            await this.interaction?.reply({ embeds: [embed]});
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     async logger(type: string, name: string, description: string, guild: Guild | null = null): Promise<void> {

@@ -13,7 +13,6 @@ module.exports = async (client: Bot) => {
 
         const command = require(`../Commands/${file}`);
 
-        // @ts-ignore
         await client.commands.set(command.name, command);
         CommandsArray.push(command);
     })

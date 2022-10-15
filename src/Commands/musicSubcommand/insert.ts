@@ -35,6 +35,6 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     .setColor(client.config.color)
     .setURL(tracks.tracks[0].url)
 
-    await client.interaction?.reply({embeds: [embed]})
+    await client.replyEmbed(embed)
 
 }

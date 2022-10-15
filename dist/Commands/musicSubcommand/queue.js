@@ -17,5 +17,5 @@ module.exports = async (client, queue) => {
         name: "nowplaying",
         value: `title : **${queue.current.title}**`
     });
-    await client.interaction?.reply({ embeds: [embed] });
+    await client.replyEmbed(embed);
 };

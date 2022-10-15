@@ -9,7 +9,7 @@ module.exports = async (client: Bot, queue: Queue) => {
 
     queue.skip()
 
-    const track = queue.current
+    const track = queue.tracks[0]
     
     return await client.Reply("Command skip", "✅",  `Music skip to : **${track.title}**`)
 }

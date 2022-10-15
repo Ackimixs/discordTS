@@ -1,9 +1,14 @@
+import { Bot } from "../Bot";
+
 const { GuildDB } = require('./Schema/Guild')
 
-export const createGuild = async (guildId: string) : Promise<void> => {
+export const createGuild = async (guildId: string, client: Bot) : Promise<void> => {
     const guild = new GuildDB({
-        guildId
+        guildId,
+        language: "en"
     })
     
     await guild.save();
+
+    await client.config?.Guild?.set(guild.id, {guildId: guild.id, language: "en"})
 }

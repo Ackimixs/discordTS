@@ -19,5 +19,5 @@ module.exports = async (client, queue) => {
         .setDescription(`By : ${tracks.tracks[0].author} | duration : ${tracks.tracks[0].duration} | request by ${tracks.tracks[0].requestedBy}`)
         .setColor(client.config.color)
         .setURL(tracks.tracks[0].url);
-    await client.interaction?.reply({ embeds: [embed] });
+    await client.replyEmbed(embed);
 };

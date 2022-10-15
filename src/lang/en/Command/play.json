@@ -1,0 +1,13 @@
+{
+    "data": {
+        "name": "play",
+        "description": "play a track",
+        "options": {
+            "name": "name",
+            "description": "song name or url"
+        }
+    },
+    "exe": {
+        
+    }
+}

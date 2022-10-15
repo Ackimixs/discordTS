@@ -17,6 +17,6 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     .setURL(np.url ? np.url  : null)
     .setThumbnail(np.thumbnail)
 
-    await client.interaction?.reply({embeds: [embed]})
+    await client.replyEmbed(embed)
 
 }

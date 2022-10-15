@@ -24,5 +24,5 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         value: `title : **${queue.current.title}**`
     })
 
-    await client.interaction?.reply({embeds: [embed]})
+    await client.replyEmbed(embed)
 }

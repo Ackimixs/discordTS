@@ -1,6 +1,6 @@
 import { Queue, QueueRepeatMode } from "discord-player";
 import { Bot } from "src/Structures/Bot";
-import {ChatInputCommandInteraction, EmbedBuilder, GuildResolvable} from "discord.js";
+import {ChatInputCommandInteraction, GuildResolvable} from "discord.js";
 
 module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
@@ -31,7 +31,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         return await client.Reply("Error music", "❌", "Could not join your voice channel!", true);
     }
 
-    const tracks = await client.player.search("https://open.spotify.com/playlist/5cpKaHtZrynMYtA2FvXfo8?si=dfe25b6043fe4930", {
+    const tracks = await client.player.search("https://www.youtube.com/watch?v=o5u0iyr8DT4&list=OLAK5uy_kWvGPCOHvJjV3-dr3t1dDARSwYgvCyYaE", {
         requestedBy: user,
     })
 
@@ -39,7 +39,10 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
 
     tracks.playlist ? queue.addTracks(tracks.tracks) : queue.addTrack(tracks.tracks[0]);
-
+    if (!queue.playing) {
+        await queue.play();
+    }
+    
     queue.shuffle()
 
     await queue.setFilters({
@@ -47,13 +50,9 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         bassboost_low: true
     })
 
-    if (!queue.playing) {
-        await queue.play();
-    }
+
 
     queue.setRepeatMode(QueueRepeatMode.QUEUE);
 
-    queue.skip()
     return client.Reply("Oops", "👹", "You want to play lets play", true);
-
 }

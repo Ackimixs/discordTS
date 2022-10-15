@@ -1,0 +1,9 @@
+{
+  "builder": {
+    "name": "ping",
+    "description": "display the ping"
+  },
+  "exe": {
+    "result": "the ping actuel est de : "
+  }
+}

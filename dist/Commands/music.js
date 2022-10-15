@@ -71,6 +71,44 @@ module.exports = {
         },
         {
             type: discord_js_1.ApplicationCommandOptionType.Subcommand,
+            name: "info",
+            description: "Shwo info about hte current track"
+        },
+        {
+            type: discord_js_1.ApplicationCommandOptionType.Subcommand,
+            name: "spotify",
+            description: "spotify playlist",
+            options: [
+                {
+                    type: discord_js_1.ApplicationCommandOptionType.String,
+                    name: "type",
+                    description: "type of search",
+                    required: true,
+                    choices: [
+                        {
+                            name: "album",
+                            value: "album"
+                        },
+                        {
+                            name: "track",
+                            value: "track"
+                        },
+                        {
+                            name: "episode",
+                            value: "episode"
+                        }
+                    ]
+                },
+                {
+                    type: discord_js_1.ApplicationCommandOptionType.String,
+                    name: "name",
+                    description: "name of the research",
+                    required: true,
+                }
+            ]
+        },
+        {
+            type: discord_js_1.ApplicationCommandOptionType.Subcommand,
             name: "skip_to",
             description: "skip to a certain the track",
             options: [
@@ -202,7 +240,8 @@ module.exports = {
         const interaction = client.interaction;
         if (!interaction)
             return;
-        const { options, guild, member } = interaction;
+        const { options, guild } = interaction;
+        const member = interaction.member;
         const subcommand = options.getSubcommand();
         const queue = client.player.getQueue(guild);
         if (!member?.voice.channel)

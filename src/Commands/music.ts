@@ -1,5 +1,5 @@
 import { QueueRepeatMode } from "discord-player";
-import { ApplicationCommandOptionType, GuildResolvable } from "discord.js";
+import {ApplicationCommandOptionType, ChatInputCommandInteraction, GuildMember, GuildResolvable} from "discord.js";
 import { Bot } from "src/Structures/Bot";
 
 
@@ -70,6 +70,44 @@ module.exports = {
             type: ApplicationCommandOptionType.Subcommand,
             name: "testing",
             description: "do not publish that"
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "info",
+            description: "Shwo info about hte current track"
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "spotify",
+            description: "spotify playlist",
+            options: [
+                {
+                    type: ApplicationCommandOptionType.String,
+                    name: "type",
+                    description: "type of search",
+                    required: true,
+                    choices: [
+                        {
+                            name: "album",
+                            value: "album"
+                        },
+                        {
+                            name: "track",
+                            value: "track"
+                        },
+                        {
+                            name: "episode",
+                            value: "episode"
+                        }
+                    ]
+                },
+                {
+                    type: ApplicationCommandOptionType.String,
+                    name: "name",
+                    description: "name of the research",
+                    required: true,
+                }
+            ]
         },
         {
             type: ApplicationCommandOptionType.Subcommand,
@@ -208,21 +246,16 @@ module.exports = {
 
         if (!interaction) return;
 
-        const { options, guild, member } = interaction;
+        const { options, guild } = interaction as ChatInputCommandInteraction;
 
-        // @ts-ignore
+        const member = interaction.member as GuildMember
+
         const subcommand = options.getSubcommand();
 
         const queue = client.player.getQueue(guild as GuildResolvable)
 
-        // @ts-ignore
         if (!member?.voice.channel) return client.Reply(`Command ${subcommand}`, "❌", "You are not in a voice channel", true);
 
         await require(`./musicSubcommand/${subcommand}`)(client, queue);
-
-        /*switch (subcommand) {
-
-        }*/
-
     }
 }

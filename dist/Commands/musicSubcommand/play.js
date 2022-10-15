@@ -4,6 +4,7 @@ const discord_js_1 = require("discord.js");
 module.exports = async (client, queue) => {
     if (!client.interaction)
         return;
+    await client.interaction.deferReply();
     const { options, user, guild, channel, member } = client.interaction;
     if (!queue) {
         queue = await client.player.createQueue(guild, {
@@ -26,7 +27,7 @@ module.exports = async (client, queue) => {
     }
     catch (err) {
         client.player.deleteQueue(guild);
-        return await client.Reply("Error music", "❌", "Could not join your voice channel!", true);
+        return await client.editReply("Error music", "❌", "Could not join your voice channel!");
     }
     const query = options.getString("name");
     if (!query)
@@ -35,7 +36,7 @@ module.exports = async (client, queue) => {
         requestedBy: user,
     });
     if (!tracks || !tracks.tracks.length)
-        return await client.Reply("Music command", "❌", `I'm sorry but track **${query}** not found`, true);
+        return await client.editReply("Music command", "❌", `I'm sorry but track **${query}** not found`);
     tracks.playlist ? queue.addTracks(tracks.tracks) : queue.addTrack(tracks.tracks[0]);
     if (!queue.playing)
         await queue.play();
@@ -45,5 +46,5 @@ module.exports = async (client, queue) => {
         .setDescription(`By : ${tracks.tracks[0].author} | duration : ${tracks.tracks[0].duration} | request by ${tracks.tracks[0].requestedBy}`)
         .setColor(client.config.color)
         .setURL(tracks.tracks[0].url);
-    await client.interaction.reply({ embeds: [embed] });
+    await client.interaction.editReply({ embeds: [embed] });
 };

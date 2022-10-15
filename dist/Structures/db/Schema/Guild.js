@@ -4,10 +4,14 @@ exports.GuildDB = exports.Guild = void 0;
 const mongoose_1 = require("mongoose");
 exports.Guild = new mongoose_1.Schema({
     guildId: String,
+    language: String,
     logChannel: {
         id: String
     },
     errorChannel: {
+        id: String
+    },
+    memberCoutChannel: {
         id: String
     }
 });

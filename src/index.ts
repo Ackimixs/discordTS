@@ -17,6 +17,7 @@ const validEnv = require('./utils/validEnv');
 
     const config: Config = {
         token: process.env.BOT_TOKEN as string,
+        spotifyToken: process.env.SPOTIFY_TOKEN as string,
         mongoUri: process.env.DATABASE_URL as string,
         color: "Random",
         Guild: new Map<string, GuildBot>()
@@ -44,6 +45,8 @@ const validEnv = require('./utils/validEnv');
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
+
+    module.exports = client
 
     await client.login(client.config.token)
 })()
