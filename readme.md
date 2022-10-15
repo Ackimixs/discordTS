@@ -17,7 +17,7 @@ DATABASE_URL="your mango db uri"
 
 rename the file as `.env`
 
-after run `npm run build` to build javascript projet
+after run `npm run build` to build javascript projet\n
 finaly run `npm run start` to start the bot
 
 ## How that work
@@ -26,5 +26,5 @@ the bot use a mongo database for logs system and multi-guilds purpose
 
 
 ## Warning
-i'm jsust a fucking junior dev so you have any issue please tell
+i'm jsust a fucking junior dev so you have any issue please tell\n
 (Ps: it's only the first version and the bot is not finish)
