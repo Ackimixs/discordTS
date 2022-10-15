@@ -10,9 +10,9 @@ First downlaods the repo
 complete the .env.exemple as :
 
 ```
-BOT_TOKEN="your [discord bot token](https://discord.com/developers/applications)"
-SPOTIFY_CLIENTID="your (spotify client id)[https://developer.spotify.com/dashboard]"
-SPOTIFY_SECRET="your (spotify secret)[https://developer.spotify.com/dashboard]"
+BOT_TOKEN="your discord bot tokenhttps://discord.com/developers/applications"
+SPOTIFY_CLIENTID="your spotify client idhttps://developer.spotify.com/dashboard"
+SPOTIFY_SECRET="your spotify secrethttps://developer.spotify.com/dashboard"
 DATABASE_URL="your mango db uri"
 ```
 
@@ -29,3 +29,8 @@ the bot use a mongo database for logs system and multi-guilds purpose
 ## Warning
 i'm jsust a fucking junior dev so you have any issue please tell
 (Ps: it's only the first version and the bot is not finish)
+
+## How to have every .env key
+[discord bot token](https://discord.com/developers/applications)
+[spotify client id](https://developer.spotify.com/dashboard)
+[spotify secret](https://developer.spotify.com/dashboard)
