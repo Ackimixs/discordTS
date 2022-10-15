@@ -1,6 +1,6 @@
 ### Acki discord bot
 
-An other discord bot made with [discord.js](https://github.com/discordjs/discord.js)  
+An other discord bot made with [discord.js](https://github.com/discordjs/discord.js) v14
 Inspired by [androz discord bot](https://github.com/Androz2091/discord-music-bot)
 the bot have a multi guild system with mongodb, music system, logs system
 
@@ -8,8 +8,9 @@ the bot have a multi guild system with mongodb, music system, logs system
 
 First downlaods the repo
 complete the .env.exemple as :
+
 ```
-BOT_TOKEN="your [discord bot token]()"
+BOT_TOKEN="your [discord bot token](https://discord.com/developers/applications)"
 SPOTIFY_CLIENTID="your (spotify client id)[https://developer.spotify.com/dashboard]"
 SPOTIFY_SECRET="your (spotify secret)[https://developer.spotify.com/dashboard]"
 DATABASE_URL="your mango db uri"
