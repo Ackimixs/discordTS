@@ -3,7 +3,7 @@
 Another discord bot made with [discord.js](https://github.com/discordjs/discord.js) v14  
 Inspired by [androz discord bot](https://github.com/Androz2091/discord-music-bot)  
 the bot have a multi guild system with mongodb, music system, logs system  
-
+    
 blindtest system v0.0.1 
 
 ## how to use
@@ -24,9 +24,9 @@ after run `npm run build` to build javascript project
 finally run `npm run start` to start the bot    
 
 ## How to have every .env key
-[discord bot token](https://discord.com/developers/applications)
-[spotify client id](https://developer.spotify.com/dashboard)
-[spotify secret](https://developer.spotify.com/dashboard)
+[discord bot token](https://discord.com/developers/applications)    
+[spotify client id](https://developer.spotify.com/dashboard)        
+[spotify secret](https://developer.spotify.com/dashboard)   
 
 for mongodb you can use your db or use mongodb atlas
 [mongodb](https://www.mongodb.com/fr-fr)    
@@ -37,7 +37,7 @@ the bot use a mongo database for logs system and multi-guilds purpose
 
 
 ## Warning
-I'm just a fucking junior dev, so if you have any issue please tell me
+I'm just a fucking junior dev, so if you have any issue please tell me  
 (Ps: it's only the first version and the bot is not finish)  
 i've some problem with all play command (spotify, insert and play)  
 
