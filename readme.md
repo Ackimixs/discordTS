@@ -28,8 +28,8 @@ finally run `npm run start` to start the bot
 [spotify client id](https://developer.spotify.com/dashboard)
 [spotify secret](https://developer.spotify.com/dashboard)
 
-# for mongodb you can use your db or use mongodb atlas
-[mongodb](https://www.mongodb.com/fr-fr)
+for mongodb you can use your db or use mongodb atlas
+[mongodb](https://www.mongodb.com/fr-fr)    
 
 ## How that work
 the bot is build using [discord.js](https://github.com/discordjs/discord.js) libraries and [discord-player](https://github.com/Androz2091/discord-player) for the music part  
@@ -44,4 +44,4 @@ i've some problem with all play command (spotify, insert and play)
 ## In the future
 * Better music system and fix some issue with it
 * blindtest system upgrade to 1.0
-* a better bot in general   
+* a better bot in general
