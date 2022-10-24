@@ -7,6 +7,8 @@ module.exports = {
 
 
     async execute(client: Bot) {
-        return client?.Reply("Ping", "✅", `The current ping is \`${client.ws.ping} ms\``, true);
+        const interaction = client.interaction
+        if (!interaction) return
+        return client?.Reply(interaction, "Ping", "✅", `The current ping is \`${client.ws.ping} ms\``, true);
     }
 }

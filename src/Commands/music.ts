@@ -248,14 +248,18 @@ module.exports = {
 
         const { options, guild } = interaction as ChatInputCommandInteraction;
 
+        if (!client.config.Guild.get(guild?.id as string)?.blindtestSession?.terminate) {
+            return await interaction.reply({content: "You can't use music system with a blindtest session i'm sorry  😥", ephemeral: true})
+        }
+
         const member = interaction.member as GuildMember
 
         const subcommand = options.getSubcommand();
 
         const queue = client.player.getQueue(guild as GuildResolvable)
 
-        if (!member?.voice.channel) return client.Reply(`Command ${subcommand}`, "❌", "You are not in a voice channel", true);
+        if (!member?.voice.channel) return client.Reply(interaction, `Command ${subcommand}`, "❌", "You are not in a voice channel", true);
 
-        await require(`./musicSubcommand/${subcommand}`)(client, queue);
+        await require(`./musicSubcommand/${subcommand}`)(client, queue, interaction);
     }
 }

@@ -68,6 +68,7 @@ export const getRandomTrackName = async (artistName: string): Promise<{trackName
 }
 
 export const getRandomTrack = async (): Promise<randomTrack | null> => {
+    //TODO werify random because now is always the same track (just have more track)
     const artist = await getRandomArtist();
     const artistName = artist.artistName
     const track = await getRandomTrackName(artistName);

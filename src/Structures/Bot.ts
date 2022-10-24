@@ -1,12 +1,10 @@
 import {
-    Channel,
     Client,
     ClientOptions,
     Collection,
     CommandInteraction,
     EmbedBuilder,
     Guild,
-    TextBasedChannel
 } from "discord.js";
 import { Command } from "src/interface/command";
 import { Config } from "src/interface/config";
@@ -34,31 +32,31 @@ export class Bot extends Client {
         this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.spotifyCLientId, clientSecret: this.config.spotifySecret } });
     }
 
-    async Reply(title: string, emoji: string ,content: string, ephemeral: boolean = false): Promise<void> {
+    async Reply(interaction: CommandInteraction, title: string, emoji: string ,content: string, ephemeral: boolean = false): Promise<void> {
         const e = await createEmbed(this)
         e.setDescription(emoji + ' | ' + content).setTitle(title)
 
         try {
-            await this.interaction?.reply({ embeds: [e], ephemeral: ephemeral});
+            await interaction?.reply({ embeds: [e], ephemeral: ephemeral});
         } catch (e) {
             console.log(e);
         }
     }
 
-    async editReply(title: string, emoji: string ,content: string): Promise<void> {
+    async editReply(interaction: CommandInteraction, title: string, emoji: string ,content: string): Promise<void> {
         const e = await createEmbed(this)
         e.setDescription(emoji + ' | ' + content).setTitle(title)
 
         try {
-            await this.interaction?.editReply({ embeds: [e]});
+            await interaction?.editReply({ embeds: [e]});
         } catch (e) {
             console.log(e);
         }
     }
 
-    async replyEmbed(embed: EmbedBuilder): Promise<void> {
+    async replyEmbed(interaction: CommandInteraction, embed: EmbedBuilder): Promise<void> {
         try {
-            await this.interaction?.reply({ embeds: [embed]});
+            await interaction?.reply({ embeds: [embed]});
         } catch (e) {
             console.log(e);
         }

@@ -24,9 +24,10 @@ module.exports = {
     ],
 
     async execute(client: Bot) {
-        const { options, guildId, member, guild } = client.interaction as ChatInputCommandInteraction
 
+        const interaction = client.interaction as ChatInputCommandInteraction
 
+        const { options, guildId, member, guild } = interaction
 
         const channelQuery = options.getChannel("channel") as VoiceChannel
 
@@ -43,7 +44,7 @@ module.exports = {
         await channelQuery.setName(`Member count - ${memberCount}`)
 
 
-        await client.Reply("Set log", "✅", `The member count channel is now : ${channelQuery}`)
+        await client.Reply(interaction, "Set log", "✅", `The member count channel is now : ${channelQuery}`)
 
 
     }

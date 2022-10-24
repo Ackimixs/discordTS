@@ -10,6 +10,8 @@ module.exports = {
     async execute(client: Bot) {
         const commands = client.commands
 
+        const interaction = client.interaction;
+
         const embed = new EmbedBuilder().setTitle('Command from AckiBot').setDescription("> here the list aff all command available with this bot")
 
         commands.forEach(command => {
@@ -25,6 +27,6 @@ module.exports = {
             })
         })
 
-        await client.interaction?.reply({embeds: [embed]})
+        await interaction?.reply({embeds: [embed]})
     }
 }

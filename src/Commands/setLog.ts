@@ -38,7 +38,11 @@ module.exports = {
     ],
 
     async execute(client: Bot) {
-        const { options, guildId, member } = client.interaction as ChatInputCommandInteraction
+        const interaction = client.interaction
+
+        if (!interaction) return
+
+        const { options, guildId, member } = interaction as ChatInputCommandInteraction
 
         const subCommand = options.getSubcommand()
 
@@ -48,25 +52,25 @@ module.exports = {
         // @ts-ignore
         if (!member?.permissions.has(PermissionsBitField.StageModerator))
 
-        if (!channelQuery || !channelQuery.isTextBased()) return client.Reply("Commmand log", "❌", "The channel provided is not a text based channel", true)
+            if (!channelQuery || !channelQuery.isTextBased()) return client.Reply(interaction, "Commmand log", "❌", "The channel provided is not a text based channel", true)
 
         switch (subCommand) {
             case "log": {
                 await updatelogChannel(guildId as string, channelQuery, client)
 
-                await client.Reply("Set log", "✅", `The log channel is now : ${channelQuery}`)
+                await client.Reply(interaction, "Set log", "✅", `The log channel is now : ${channelQuery}`)
 
                 break;
             }
             case "error": {
                 await updateErrorChannel(guildId as string, channelQuery, client)
 
-                await client.Reply("Set log", "✅", `The log channel is now : ${channelQuery}`)
+                await client.Reply(interaction, "Set log", "✅", `The log channel is now : ${channelQuery}`)
 
                 break;
             }
             default: {
-                return client.Reply("Commmand log", "❌", "Error while updating the channel", true)
+                return client.Reply(interaction, "Commmand log", "❌", "Error while updating the channel", true)
             }
         }
     }

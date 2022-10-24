@@ -12,7 +12,7 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
     await interaction?.deferReply()
 
     //await client.editReply("blindtest", "✅", "All a blindtest is started by : " + user.tag)
-    await interaction.editReply('a blindest is started')
+    await interaction.editReply('a blindest is loading ...')
 
     if (!options || !guild || !user) return
 
@@ -56,7 +56,6 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
         });
     }
 
-
     try {
         if (!queue.connection) {
             // @ts-ignore
@@ -72,12 +71,14 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
         requestedBy: user,
     })
 
+    await interaction.editReply("The blindtest is starting !!")
+
     await queue.play(tracks.tracks[0])
 
     const interval = await setInterval(async () => {
         blindtestSession.round++;
         if (!blindtestSession.result.get(blindtestSession.round.toString())) {
-            await verifyAllUser(client ,guild.id)
+            await verifyAllUser(client, guild.id)
             blindtestSession.terminate = true
             clearInterval(interval)
             await queue?.destroy()
@@ -103,33 +104,39 @@ const verifyAllUser = async (client: Bot,guildId: string) => {
 
     let rightAnswer: number;
 
-    session.member.forEach(member => {
-        member.resultRound.forEach(async (value, key) => {
-            rightAnswer = 0;
-            const right = session.result.get(key)
+    for (const member of session.member) {
+        rightAnswer = 0;
+
+        for (const proprety of member[1].resultRound) {
+
+            const right = session.result.get(proprety[0])
             if (!right) return;
 
             //Spotify search
             const Spotify = client.spotifyClient;
 
             // @ts-ignore
-            const { tracks } = await Spotify.search(value.artistName + ' ' + value.trackName, {types: ["track"]})
+            const { tracks } = await Spotify.search(proprety[1].artistName + ' ' + proprety[1].trackName, {types: ["track"]})
 
-            if (!tracks) return;
+            if (!tracks || !tracks[0]) return;
 
             const musicUrl = tracks[0].externalURL.spotify
+
+            console.log(musicUrl, "real : ", right.trackUrl, rightAnswer)
 
             if (right.trackUrl === musicUrl) {
                 rightAnswer++;
             }
+        }
 
-            const user = await client?.users?.fetch(member._id);
+        const user = await client?.users?.fetch(member[1]._id);
 
-            if (!user) return;
+        if (!user) return;
 
-            embed.setDescription(`you have ${rightAnswer}/${session.round} to the blndtest`);
+        console.log(rightAnswer)
 
-            await user.send({embeds: [embed]});
-        })
-    })
+        embed.setDescription(`you have ${rightAnswer}/${session.round} to the blndtest`);
+
+        return await user.send({embeds: [embed]});
+    }
 }

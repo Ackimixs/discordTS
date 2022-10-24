@@ -12,7 +12,7 @@ export const createSession = async (guildId: string) => {
     const data = new SessionDB({
         guildId,
         _id: uuidV4(),
-        terminate: false,
+        terminate: true,
         round: 0,
         createdAt: Date.now(),
         result: new Map<string, randomTrack>(),

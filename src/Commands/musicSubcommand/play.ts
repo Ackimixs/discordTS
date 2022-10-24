@@ -2,13 +2,13 @@ import { Queue } from "discord-player";
 import { Bot } from "src/Structures/Bot";
 import {ChatInputCommandInteraction, EmbedBuilder, GuildResolvable} from "discord.js";
 
-module.exports = async (client: Bot, queue: Queue): Promise<void> => {
+module.exports = async (client: Bot, queue: Queue, interaction: ChatInputCommandInteraction): Promise<void> => {
 
-    if (!client.interaction) return;
+    if (!interaction) return;
 
-    await client.interaction.deferReply()
+    await interaction.deferReply()
 
-    const { options, user, guild, channel, member } = client.interaction as ChatInputCommandInteraction;
+    const { options, user, guild, channel, member } = interaction
 
     if (!queue) {
         queue = await client.player.createQueue(guild as GuildResolvable, {
@@ -32,7 +32,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         }
     } catch (err) {
         client.player.deleteQueue(guild as GuildResolvable)
-        return await client.editReply("Error music", "❌", "Could not join your voice channel!");
+        return await client.editReply(interaction, "Error music", "❌", "Could not join your voice channel!");
     }
 
     const query = options.getString("name")
@@ -43,7 +43,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         requestedBy: user,
     })
 
-    if (!tracks || !tracks.tracks.length) return await client.editReply("Music command", "❌", `I'm sorry but track **${query}** not found`);
+    if (!tracks || !tracks.tracks.length) return await client.editReply(interaction, "Music command", "❌", `I'm sorry but track **${query}** not found`);
 
 
     tracks.playlist ? queue.addTracks(tracks.tracks) : queue.addTrack(tracks.tracks[0]);
@@ -57,6 +57,6 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     .setColor(client.config.color)
     .setURL(tracks.tracks[0].url)
 
-    await client.interaction.editReply({embeds: [embed]})
+    await interaction.editReply({embeds: [embed]})
 
 }
