@@ -4,6 +4,8 @@ Another discord bot made with [discord.js](https://github.com/discordjs/discord.
 Inspired by [androz discord bot](https://github.com/Androz2091/discord-music-bot)  
 the bot have a multi guild system with mongodb, music system, logs system  
 
+blindtest system v0.0.1 
+
 ## how to use
 
 First downloads the repo  
@@ -27,7 +29,7 @@ the bot use a mongo database for logs system and multi-guilds purpose
 
 
 ## Warning
-I'm just a fucking junior dev, so if you have any issue please tell  
+I'm just a fucking junior dev, so if you have any issue please tell me
 (Ps: it's only the first version and the bot is not finish)  
 i've some problem with all play command (spotify, insert and play)  
 
