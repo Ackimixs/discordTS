@@ -12,9 +12,9 @@ module.exports = async (client: Bot, queue: Queue) => {
 
     const pos = options.getInteger("position") as number
 
-    const skipToTrack = queue.tracks[pos+1]
+    const skipToTrack = queue.tracks[pos-1]
 
-    queue.skipTo(pos+1);
+    queue.skipTo(pos-1);
 
     return await client.Reply("Command skip to", "✅", `Music skip to **${skipToTrack.title}**`)
 }

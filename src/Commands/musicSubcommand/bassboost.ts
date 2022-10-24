@@ -1,4 +1,4 @@
-import {AudioFilters, Queue} from "discord-player";
+import {AudioFilters, Queue, QueueFilters} from "discord-player";
 import { Bot } from "src/Structures/Bot";
 
 module.exports = async (client: Bot, queue: Queue): Promise<void> => {
@@ -9,11 +9,17 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     // @ts-ignore
     const enable = client.interaction?.options.getBoolean("enable")
 
-    await queue.setFilters({
-        bassboost_high: enable
+    const actualFilter = queue.getFiltersEnabled()
+
+    let filter: QueueFilters = {
+        bassboost_high: enable,
+    }
+
+    actualFilter.forEach(f => {
+        filter[f] = enable
     })
 
-    AudioFilters
+    await queue.setFilters(filter)
 
     return await client.Reply("Command bassboost", "✅", `bassboost filter set to **${enable ? "enable": "disable"}**`)
 

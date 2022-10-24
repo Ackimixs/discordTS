@@ -1,6 +1,5 @@
 import {ChatInputCommandInteraction, GuildResolvable} from "discord.js";
 
-const Spotify = require("spotify-api.js");
 import {Queue} from "discord-player";
 import { Bot } from "src/Structures/Bot";
 import {createEmbed} from "../../utils/embed";
@@ -12,7 +11,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
     await client.interaction?.deferReply();
 
-    const spotifyClient = new Spotify.Client({ token: { clientID: client.config.spotifyCLientId, clientSecret: client.config.spotifySecret } });
+    const spotifyClient = client.spotifyClient
 
     const query = options.getString('name') as string
 
@@ -22,9 +21,9 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
     const { albums, tracks, episodes } = await spotifyClient.search(query, option);
 
-    const musicUrl: Album[] | Episode[] | Track[] = albums ? albums : tracks ? tracks : episodes ? episodes : null
+    const musicUrl: any = albums ? albums : tracks ? tracks : episodes ? episodes : null
 
-    if (musicUrl.length < 1) return await client.editReply("Music command", "❌", `I'm sorry but track **${query}** not found`);
+    if (!musicUrl || musicUrl.length < 1) return await client.editReply("Music command", "❌", `I'm sorry but track **${query}** not found`);
 
     let url: string = musicUrl[0].externalURL?.spotify
 

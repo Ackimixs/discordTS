@@ -10,9 +10,9 @@ First downloads the repo
 complete the .env.example as :  
 
 ```
-BOT_TOKEN="your discord bot tokenhttps://discord.com/developers/applications"
-SPOTIFY_CLIENTID="your spotify client idhttps://developer.spotify.com/dashboard"
-SPOTIFY_SECRET="your spotify secrethttps://developer.spotify.com/dashboard"
+BOT_TOKEN="your discord bot token"
+SPOTIFY_CLIENTID="your spotify client id"
+SPOTIFY_SECRET="your spotify secret"
 DATABASE_URL="your mango db uri"
 ```
 

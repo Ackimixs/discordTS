@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { Session } from './Session';
 
 export const Guild = new Schema<GuildBot>({
     guildId: String,
@@ -11,10 +12,10 @@ export const Guild = new Schema<GuildBot>({
     },
     memberCoutChannel: {
         id: String
-    }
+    },
+    blindtestSession: Object
 })
 
-// @ts-ignore
 export const GuildDB = model<GuildBot>('Guild', Guild)
 
 export interface GuildBot {
@@ -29,5 +30,6 @@ export interface GuildBot {
 
     memberCoutChannel?: {
         id?: string,
-    }
+    },
+    blindtestSession?: Session
 }

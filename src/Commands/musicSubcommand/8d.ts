@@ -1,4 +1,4 @@
-import {Queue} from "discord-player";
+import {Queue, QueueFilters} from "discord-player";
 import { Bot } from "src/Structures/Bot";
 
 module.exports = async (client: Bot, queue: Queue): Promise<void> => {
@@ -9,10 +9,17 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     // @ts-ignore
     const enable = client.interaction?.options.getBoolean("enable")
 
-    await queue.setFilters({
+    const actualFilter = queue.getFiltersEnabled()
+
+    let filter: QueueFilters = {
         "8D": enable
+    }
+
+    actualFilter.forEach(f => {
+        filter[f] = enable
     })
 
-    return await client.Reply("Command 8D", "✅", `8D filter set to **${enable ? "enable": "disable"}**`)
+    await queue.setFilters(filter)
 
+    return await client.Reply("Command 8D", "✅", `8D filter set to **${enable ? "enable": "disable"}**`)
 }

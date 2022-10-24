@@ -14,21 +14,24 @@ import {Player} from "discord-player";
 import {getGuild} from "./db/getGuild";
 import { GuildBot } from "./db/Schema/Guild";
 import { createEmbed } from "../utils/embed";
-import * as fs from "fs";
-const consola = require('consola')
+import { Client as SpotifyClient } from "spotify-api.js";
+const consola = require('consola');
+const Spotify = require("spotify-api.js");
 
 export class Bot extends Client {
     commands: Collection<string, Command>
     config: Config
     interaction: CommandInteraction | null
-
+    spotifyClient: SpotifyClient
     player: Player
+
     constructor(options: ClientOptions, config: Config) {
         super(options);
         this.commands = new Collection()
         this.config = config
         this.interaction = null
         this.player = new Player(this)
+        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.spotifyCLientId, clientSecret: this.config.spotifySecret } });
     }
 
     async Reply(title: string, emoji: string ,content: string, ephemeral: boolean = false): Promise<void> {
@@ -47,7 +50,7 @@ export class Bot extends Client {
         e.setDescription(emoji + ' | ' + content).setTitle(title)
 
         try {
-            await this.interaction?.reply({ embeds: [e]});
+            await this.interaction?.editReply({ embeds: [e]});
         } catch (e) {
             console.log(e);
         }

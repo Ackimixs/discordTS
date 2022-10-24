@@ -51,3 +51,5 @@ const validEnv = require('./utils/validEnv');
 
     await client.login(client.config.token)
 })()
+
+//TODO class for blindtest
