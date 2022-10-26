@@ -9,7 +9,7 @@ import {
 import { Command } from "src/interface/command";
 import { Config } from "src/interface/config";
 import {Player} from "discord-player";
-import {getGuild} from "./db/getGuild";
+import {getGuild} from "./db/Guild";
 import { GuildBot } from "./db/Schema/Guild";
 import { createEmbed } from "../utils/embed";
 import { Client as SpotifyClient } from "spotify-api.js";

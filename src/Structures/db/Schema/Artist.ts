@@ -1,8 +1,16 @@
 import { Schema, model, Document } from 'mongoose';
 
 export const ArtistSchema = new Schema<Artist>({
-    artistName: String,
-    tracks: Map
+    artistName: {
+        type: Schema.Types.String,
+        index: true,
+        required: true
+    },
+    tracks: {
+        type: Schema.Types.Map,
+        required: true,
+        default: null
+    }
 })
 
 export const ArtistDB = model<Artist>('Artist', ArtistSchema)

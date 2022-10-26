@@ -1,3 +1,4 @@
+import { Track } from "discord-player";
 import {ArtistDB} from "./Schema/Artist";
 
 
@@ -11,6 +12,9 @@ export const addArtist = async (artistName: string): Promise<void> => {
 }
 
 export const addTracks = async (artistName: string, trackName: string, trackUrl: string) => {
+    trackName.replace(/[^0-9a-z]/gi, '')
+    artistName.replace(/[^0-9a-z]/gi, '')
+
     let data = await ArtistDB.findOne({
         artistName
     })
@@ -68,7 +72,6 @@ export const getRandomTrackName = async (artistName: string): Promise<{trackName
 }
 
 export const getRandomTrack = async (): Promise<randomTrack | null> => {
-    //TODO werify random because now is always the same track (just have more track)
     const artist = await getRandomArtist();
     const artistName = artist.artistName
     const track = await getRandomTrackName(artistName);
@@ -76,7 +79,7 @@ export const getRandomTrack = async (): Promise<randomTrack | null> => {
     return {
         artistName,
         trackName: track.trackName,
-        trackUrl: track.trackUrl
+        trackUrl: track.trackUrl,
     }
 }
 
@@ -84,5 +87,6 @@ export const getRandomTrack = async (): Promise<randomTrack | null> => {
 export interface randomTrack {
     artistName: string,
     trackName: string,
-    trackUrl: string
+    trackUrl: string,
+    Track?: Track
 }

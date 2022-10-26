@@ -7,7 +7,6 @@ module.exports = {
     name: "trackStart",
 
     async execute(queue: Queue, track: Track, client: Bot) {
-        //TODO verif if a blindtest is started on the guild => no output
         const guild = queue.guild
 
         if (!client.config.Guild.get(guild.id)?.blindtestSession?.terminate) return;

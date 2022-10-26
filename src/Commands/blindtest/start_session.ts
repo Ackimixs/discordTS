@@ -1,41 +1,58 @@
 import { Bot } from "src/Structures/Bot";
-import {ChatInputCommandInteraction, GuildResolvable} from "discord.js";
+import {ChatInputCommandInteraction, EmbedBuilder, GuildResolvable} from "discord.js";
 import {getRandomTrack, randomTrack} from "../../Structures/db/Artist";
 import ms from "ms";
-import { SessionUser } from "src/Structures/db/Schema/SessionUser";
+import {BlindtestSession, SessionUser} from "src/Structures/db/Schema/Guild";
 import {createEmbed} from "../../utils/embed";
+import {updateGuild} from "../../Structures/db/Guild";
 
 module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) => {
 
     const { options, guild, user, channel, member } = interaction
 
-    await interaction?.deferReply()
+    await interaction?.deferReply({ephemeral: true})
 
-    //await client.editReply("blindtest", "✅", "All a blindtest is started by : " + user.tag)
-    await interaction.editReply('a blindest is loading ...')
+    await interaction.followUp('a blindest is loading ...')
 
     if (!options || !guild || !user) return
 
-    const blindtestSession = client.config.Guild.get(guild.id)?.blindtestSession;
+    const numberOfTrack = options.getNumber("number") as number
 
-    if (!blindtestSession) return interaction.editReply("I'm sorry but an error occured")
+    if (numberOfTrack > 20 || numberOfTrack < 1) {
+        return await interaction.editReply("The value must be between 1 and 20")
+    }
+
+    const guildBlindtest = await client.config.Guild.get(guild.id)
+
+    const blindtestSession = guildBlindtest?.blindtestSession;
+
+    if (!blindtestSession) return interaction.editReply("I'm sorry but an error occured, please contact admin")
+
+    if (!blindtestSession.terminate) return await client.editReply(interaction,"blindtest", "❌", "A blindtest session is already started")
 
     blindtestSession.round = 0;
 
     blindtestSession.result = new Map<string, randomTrack>()
     blindtestSession.member = new Map<string, SessionUser>()
 
-    blindtestSession.terminate = false;
-
-    for (let i = 0; i < 2; i++) {
-        //Get random n'est pas random
+    //Must have 2 track else the is a bug
+    for (let i = 0; i < numberOfTrack; i++) {
         const track = await getRandomTrack()
 
         if (!track) break;
 
+        const tracks = await client.player.search(track.trackUrl as string, {
+            requestedBy: user,
+        })
+
+        if (!tracks || !tracks.tracks[0]) return client.editReply(interaction, "blindtest", "❌", "an error ocurend when i search the song on the web")
+
+        track.Track = tracks.tracks[0];
+
         await blindtestSession.result.set(i.toString(), track);
     }
 
+    await updateGuild(guild.id, guildBlindtest)
 
     //Starting blindtest
     let queue = client.player.getQueue(guild as GuildResolvable)
@@ -59,84 +76,119 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
     try {
         if (!queue.connection) {
             // @ts-ignore
-            await queue.connect(member.voice.channel)
+            await queue.connect(member?.voice.channel)
         }
     } catch (err) {
         client.player.deleteQueue(guild as GuildResolvable)
         return await interaction.editReply("Could not join your voice channel!");
     }
 
+    blindtestSession.terminate = false;
 
-    let tracks = await client.player.search(blindtestSession.result.get(blindtestSession.round.toString())?.trackUrl as string, {
-        requestedBy: user,
-    })
+    await interaction.followUp("The blindtest is starting !!")
 
-    await interaction.editReply("The blindtest is starting !!")
-
-    await queue.play(tracks.tracks[0])
+    await queue.play(blindtestSession.result.get(blindtestSession.round.toString())?.Track)
 
     const interval = await setInterval(async () => {
         blindtestSession.round++;
         if (!blindtestSession.result.get(blindtestSession.round.toString())) {
-            await verifyAllUser(client, guild.id)
+            await verifyAllUser(blindtestSession, client)
             blindtestSession.terminate = true
             clearInterval(interval)
             await queue?.destroy()
-            return interaction.editReply("end blindtest")
+            await updateGuild(guild.id, guildBlindtest);
+            const embed = await BlindtestLeaderboardEmbed(blindtestSession, client);
+            await interaction.followUp({embeds: [embed]})
         }
 
-        tracks = await client.player.search(blindtestSession.result.get(blindtestSession.round.toString())?.trackUrl as string, {
-            requestedBy: user,
-        })
+        await queue?.play(blindtestSession.result.get(blindtestSession.round.toString())?.Track)
 
-        await queue?.play(tracks.tracks[0])
+        if (!queue?.destroyed) {
+            await queue?.skip()
+        }
 
-        await queue?.skip()
-    }, ms("60s"))
+    }, ms("30s"))
 }
 
-const verifyAllUser = async (client: Bot,guildId: string) => {
-    const session = client.config.Guild.get(guildId)?.blindtestSession;
+const verifyAllUser = async (session: BlindtestSession, client: Bot) => {
 
-    const embed = await createEmbed(client)
+    if (!session || !session.member) return;
 
-    if (!session) return;
+    for (let value of session.member.values()) {
 
-    let rightAnswer: number;
+        if (!value?.resultRound) return;
 
-    for (const member of session.member) {
-        rightAnswer = 0;
+        const embed = await createEmbed(client);
 
-        for (const proprety of member[1].resultRound) {
+        embed.setTitle("Blindtest session")
 
-            const right = session.result.get(proprety[0])
+        for (const [resultKey, resultValue] of value.resultRound) {
+
+            const right = session.result.get(resultKey)
             if (!right) return;
+
+            embed.addFields({
+                name: `Right anwser : **${right.trackName}** - **${right.artistName}** [link](${right.trackUrl})`,
+                value: `Your input : **${resultValue.trackName}** - **${resultValue.artistName}**`
+            })
 
             //Spotify search
             const Spotify = client.spotifyClient;
 
-            // @ts-ignore
-            const { tracks } = await Spotify.search(proprety[1].artistName + ' ' + proprety[1].trackName, {types: ["track"]})
+            const { tracks } = await Spotify.search(resultValue.artistName + ' ' + resultValue.trackName, {types: ["track"]})
 
             if (!tracks || !tracks[0]) return;
 
             const musicUrl = tracks[0].externalURL.spotify
 
-            console.log(musicUrl, "real : ", right.trackUrl, rightAnswer)
-
             if (right.trackUrl === musicUrl) {
-                rightAnswer++;
+                value.point++
             }
         }
 
-        const user = await client?.users?.fetch(member[1]._id);
+        const user = await client?.users?.fetch(value.id);
 
         if (!user) return;
 
-        console.log(rightAnswer)
+        embed.setDescription(`you have ${value.point}/${session.round} to the blndtest`);
 
-        embed.setDescription(`you have ${rightAnswer}/${session.round} to the blndtest`);
-
-        return await user.send({embeds: [embed]});
+        await user.send({embeds: [embed]});
     }
+
+}
+
+
+export const BlindtestLeaderboardEmbed = async (session: BlindtestSession, client: Bot): Promise<EmbedBuilder> => {
+
+    const embed = await createEmbed(client);
+
+    embed.setTitle("Blindtest session")
+
+    let leaderboardUser: string = '';
+
+    const sortedUser = new Map([...session.member.entries()].sort((a, b) => b[1].point - a[1].point).slice(0, 3));
+
+    let i = 1;
+    for (let value of sortedUser.values()) {
+        leaderboardUser += `${i} - **${value.tag}**\n`
+        i++;
+    }
+
+    embed.addFields({
+        name: "User leaderboard",
+        value: leaderboardUser ?? ""
+    })
+
+    let response: string = '';
+
+    for (let [key, value] of session.result) {
+        response += `${parseInt(key, 10)+1} - **${value.trackName}** by **${value.artistName}** [link](${value.trackUrl})\n`
+    }
+
+    embed.addFields({
+        name: "Track info :",
+        value: response ?? ""
+    })
+
+    return embed
 }

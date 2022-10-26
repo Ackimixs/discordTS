@@ -1,17 +1,30 @@
-import { Schema, model } from 'mongoose';
-import { Session } from './Session';
+import { Schema, model, ObjectId } from 'mongoose';
+import { randomTrack } from '../Artist';
 
 export const Guild = new Schema<GuildBot>({
-    guildId: String,
-    language: String,
+    guildId: {
+        type: String,
+        index: true,
+        required: true
+    },
+    language: {
+        type: Schema.Types.String,
+        default: "en"
+    },
     logChannel: {
-        id: String
+        id: {
+            type: Schema.Types.String
+        }
     },
     errorChannel: {
-        id: String
+        id: {
+            type: Schema.Types.String
+        }
     },
     memberCoutChannel: {
-        id: String
+        id: {
+            type: Schema.Types.String
+        }
     },
     blindtestSession: Object
 })
@@ -31,5 +44,23 @@ export interface GuildBot {
     memberCoutChannel?: {
         id?: string,
     },
-    blindtestSession?: Session
+    blindtestSession: BlindtestSession
+}
+
+
+export interface BlindtestSession {
+    guildId: string,
+    terminate: boolean,
+    round: number,
+    createdAt: Date,
+    result: Map<string, randomTrack>
+    member: Map<string, SessionUser>
+}
+
+export interface SessionUser {
+    id: string,
+    tag: string,
+    guildId: string,
+    resultRound: Map<string, randomTrack>
+    point: number
 }

@@ -1,6 +1,5 @@
 import {
     ApplicationCommandOptionType,
-    Channel,
     ChatInputCommandInteraction,
     PermissionsBitField,
     VoiceChannel
@@ -44,7 +43,7 @@ module.exports = {
         await channelQuery.setName(`Member count - ${memberCount}`)
 
 
-        await client.Reply(interaction, "Set log", "✅", `The member count channel is now : ${channelQuery}`)
+        await client.Reply(interaction, "Set log", "✅", `The member count channel is now : ${channelQuery}`, true)
 
 
     }

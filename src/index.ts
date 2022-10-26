@@ -52,4 +52,5 @@ const validEnv = require('./utils/validEnv');
     await client.login(client.config.token)
 })()
 
-//TODO class for blindtest
+//TODO refaire le blindtest avec les session comme id dans les guild => flemme
+//TODO better use of mongoose

@@ -1,8 +1,6 @@
-import {CommandInteraction, Guild, InteractionType} from "discord.js"
+import { Guild} from "discord.js"
 import { Bot } from "src/Structures/Bot";
-import {Command} from "../interface/command";
-import {createGuild} from "../Structures/db/createGuild";
-
+import {createGuild} from "../Structures/db/Guild";
 
 module.exports = {
     name: 'guildCreate',
@@ -10,7 +8,9 @@ module.exports = {
 
     async execute(guild: Guild, client: Bot) {
 
-        await createGuild(guild.id, client)
+        const data = await createGuild(guild.id)
+
+        client.config.Guild.set(data.guildId, data);
 
         await client.logger("Event", "Guild add", `Guild name : ${guild.name} | guild id : ${guild.id}`)
     }

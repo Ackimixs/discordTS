@@ -1,24 +1,25 @@
-import { SessionDB } from "./Schema/Session";
-import { v4 as uuidV4 } from 'uuid';
+import {BlindtestSession, SessionUser} from "./Schema/Guild";
 import {randomTrack} from "./Artist";
+import {ObjectId} from "mongoose";
+import { User } from "discord.js";
 
-export const getSessionFromGuildId = async (guildId: string) => {
-    return SessionDB.findOne({
-        guildId
-    })
+export const createSession = async (guildId: string): Promise<BlindtestSession> => {
+    return {
+        guildId,
+        round: 0,
+        createdAt: new Date(),
+        terminate: true,
+        result: new Map<string, randomTrack>(),
+        member: new Map<string, SessionUser>(),
+    }
 }
 
-export const createSession = async (guildId: string) => {
-    const data = new SessionDB({
+export const createSessionUser = (user: User, guildId: string): SessionUser => {
+    return {
+        id: user.id,
+        tag: user.tag,
         guildId,
-        _id: uuidV4(),
-        terminate: true,
-        round: 0,
-        createdAt: Date.now(),
-        result: new Map<string, randomTrack>(),
-    })
-
-    await data.save()
-
-    return data;
+        resultRound: new Map<string, randomTrack>(),
+        point: 0
+    }
 }

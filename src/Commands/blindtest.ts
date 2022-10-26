@@ -30,6 +30,14 @@ module.exports = {
             type: ApplicationCommandOptionType.Subcommand,
             name: "start_session",
             description: "start a blindtest session",
+            options: [
+                {
+                    type: ApplicationCommandOptionType.Number,
+                    name: "number",
+                    description: "number of song to play",
+                    required: true
+                }
+            ]
         },
         {
             type: ApplicationCommandOptionType.Subcommand,
@@ -49,7 +57,12 @@ module.exports = {
                     required: true
                 },
             ]
-        }
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "leaderboard",
+            description: "Show the leaderboard of the last blindtest session",
+        },
     ],
 
 

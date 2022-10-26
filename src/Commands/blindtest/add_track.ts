@@ -1,6 +1,5 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { Bot } from "src/Structures/Bot";
-import {ClientSearchOptions} from "spotify-api.js";
 import {addTracks} from "../../Structures/db/Artist";
 
 module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) => {

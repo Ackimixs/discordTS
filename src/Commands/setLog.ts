@@ -58,14 +58,14 @@ module.exports = {
             case "log": {
                 await updatelogChannel(guildId as string, channelQuery, client)
 
-                await client.Reply(interaction, "Set log", "✅", `The log channel is now : ${channelQuery}`)
+                await client.Reply(interaction, "Set log", "✅", `The log channel is now : ${channelQuery}`, true)
 
                 break;
             }
             case "error": {
                 await updateErrorChannel(guildId as string, channelQuery, client)
 
-                await client.Reply(interaction, "Set log", "✅", `The log channel is now : ${channelQuery}`)
+                await client.Reply(interaction, "Set log", "✅", `The error log channel is now : ${channelQuery}`, true)
 
                 break;
             }
