@@ -1,6 +1,5 @@
 import {BlindtestSession, SessionUser} from "./Schema/Guild";
 import {randomTrack} from "./Artist";
-import {ObjectId} from "mongoose";
 import { User } from "discord.js";
 
 export const createSession = async (guildId: string): Promise<BlindtestSession> => {

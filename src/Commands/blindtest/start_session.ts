@@ -107,42 +107,39 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
             await queue?.skip()
         }
 
-    }, ms("30s"))
+    }, ms("60s"))
 }
 
 const verifyAllUser = async (session: BlindtestSession, client: Bot) => {
 
     if (!session || !session.member) return;
 
-    for (let value of session.member.values()) {
-
-        if (!value?.resultRound) return;
+    for (let [key, value] of session.member) {
 
         const embed = await createEmbed(client);
 
         embed.setTitle("Blindtest session")
 
-        for (const [resultKey, resultValue] of value.resultRound) {
-
-            const right = session.result.get(resultKey)
-            if (!right) return;
+        for (let [rightKey, rightValue] of session.result) {
 
             embed.addFields({
-                name: `Right anwser : **${right.trackName}** - **${right.artistName}** [link](${right.trackUrl})`,
-                value: `Your input : **${resultValue.trackName}** - **${resultValue.artistName}**`
+                name: `Right anwser : **${rightValue.trackName}** - **${rightValue.artistName}**`,
+                value: `Your input : **${value.resultRound.get(rightKey)?.trackName ?? "no input"}** - **${value.resultRound.get(rightKey)?.artistName ?? "no input"}**`
             })
 
-            //Spotify search
-            const Spotify = client.spotifyClient;
 
-            const { tracks } = await Spotify.search(resultValue.artistName + ' ' + resultValue.trackName, {types: ["track"]})
+            if (value.resultRound.get(rightKey)) {
+                const Spotify = client.spotifyClient;
 
-            if (!tracks || !tracks[0]) return;
+                const { tracks } = await Spotify.search(value.resultRound.get(rightKey)?.artistName + ' ' + value.resultRound.get(rightKey)?.trackName, {types: ["track"]})
 
-            const musicUrl = tracks[0].externalURL.spotify
+                if (!tracks || !tracks[0]) return;
 
-            if (right.trackUrl === musicUrl) {
-                value.point++
+                const musicUrl = tracks[0].externalURL.spotify
+
+                if (rightValue.trackUrl === musicUrl) {
+                    value.point++
+                }
             }
         }
 
