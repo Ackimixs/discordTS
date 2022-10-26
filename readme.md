@@ -4,7 +4,7 @@ Another discord bot made with [discord.js](https://github.com/discordjs/discord.
 Inspired by [androz discord bot](https://github.com/Androz2091/discord-music-bot)  
 the bot have a multi guild system with mongodb, music system, logs system  
     
-blindtest system v0.1.1
+blindtest system v1.0.1
 
 ## how to use
 
