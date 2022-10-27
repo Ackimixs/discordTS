@@ -1,6 +1,6 @@
-import { QueueRepeatMode } from "discord-player";
+import {QueueRepeatMode} from "discord-player";
 import {ApplicationCommandOptionType, ChatInputCommandInteraction, GuildMember, GuildResolvable} from "discord.js";
-import { Bot } from "src/Structures/Bot";
+import {Bot} from "src/Structures/Bot";
 
 
 module.exports = {
@@ -75,6 +75,19 @@ module.exports = {
             type: ApplicationCommandOptionType.Subcommand,
             name: "info",
             description: "Shwo info about hte current track"
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "set",
+            description: "set the full music system",
+            options: [
+                {
+                    type: ApplicationCommandOptionType.Boolean,
+                    name: "mode",
+                    description: "set to enable or disable",
+                    required: true
+                }
+            ]
         },
         {
             type: ApplicationCommandOptionType.Subcommand,

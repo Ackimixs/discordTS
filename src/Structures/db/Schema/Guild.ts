@@ -1,4 +1,4 @@
-import { Schema, model, ObjectId } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { randomTrack } from '../Artist';
 
 export const Guild = new Schema<GuildBot>({
@@ -14,19 +14,35 @@ export const Guild = new Schema<GuildBot>({
     logChannel: {
         id: {
             type: Schema.Types.String
+        },
+        enable: {
+            type: Schema.Types.Boolean,
+            default: false
         }
     },
     errorChannel: {
         id: {
             type: Schema.Types.String
+        },
+        enable: {
+            type: Schema.Types.Boolean,
+            default: false
         }
     },
     memberCoutChannel: {
         id: {
             type: Schema.Types.String
+        },
+        enable: {
+            type: Schema.Types.Boolean,
+            default: false
         }
     },
-    blindtestSession: Object
+    blindtestSession: Object,
+    musicSystem: {
+        type: Schema.Types.Boolean,
+        default: false,
+    }
 })
 
 export const GuildDB = model<GuildBot>('Guild', Guild)
@@ -35,16 +51,19 @@ export interface GuildBot {
     guildId: string
     language: string,
     logChannel?: {
-        id?: string,
+        id: string,
+        enable: boolean
     }
     errorChannel?: {
-        id?: string,
+        id: string,
+        enable: boolean
     },
-
     memberCoutChannel?: {
-        id?: string,
+        id: string,
+        enable: boolean
     },
-    blindtestSession: BlindtestSession
+    blindtestSession: BlindtestSession,
+    musicSystem: boolean
 }
 
 

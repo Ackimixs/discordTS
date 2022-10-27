@@ -6,6 +6,7 @@ export interface Config {
     spotifyCLientId: string,
     spotifySecret: string,
     mongoUri: string,
-    color: ColorResolvable
+    color: ColorResolvable,
+    dev: string,
     Guild: Map<string, GuildBot>
 }

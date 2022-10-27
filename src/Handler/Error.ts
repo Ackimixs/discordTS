@@ -1,5 +1,5 @@
 import { Bot } from "src/Structures/Bot"
-import { createEmbed } from "src/utils/embed"
+import { createEmbed } from "../utils/embed";
 
 module.exports = async (client: Bot) => {
     const embed = await createEmbed(client)

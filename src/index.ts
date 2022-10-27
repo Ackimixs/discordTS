@@ -21,6 +21,7 @@ const validEnv = require('./utils/validEnv');
         spotifySecret: process.env.SPOTIFY_SECRET as string,
         mongoUri: process.env.DATABASE_URI as string,
         color: "Random",
+        dev: process.env.MODE || "dist",
         Guild: new Map<string, GuildBot>()
     }
 
@@ -30,12 +31,10 @@ const validEnv = require('./utils/validEnv');
         allowedMentions: { parse: ["everyone", "users", "roles"] },
     }, config)
 
-
-
     client.commands = new Collection();
 
     //Handler
-    const files = fs.readdirSync("./dist/Handler")
+    const files = fs.readdirSync(`./${client.config.dev}/Handler`)
 
     files.forEach(file => {
         require(`./Handler/${file}`)(client)
@@ -51,6 +50,3 @@ const validEnv = require('./utils/validEnv');
 
     await client.login(client.config.token)
 })()
-
-//TODO refaire le blindtest avec les session comme id dans les guild => flemme
-//TODO better use of mongoose

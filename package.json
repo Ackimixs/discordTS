@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "MODE=src ts-node -r dotenv/config ./src/index.ts",
     "build": "tsc",
     "start": "node -r dotenv/config ./dist/index.js"
   },
@@ -30,6 +31,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^18.8.5",
     "@types/uuid": "^8.3.4",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   }
 }

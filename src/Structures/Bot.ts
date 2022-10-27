@@ -69,6 +69,8 @@ export class Bot extends Client {
 
         const guildDB: GuildBot = await getGuild(guild.id)
 
+        if (!guildDB.logChannel?.enable) return
+
         const channelId = guildDB.logChannel?.id
 
         if (!channelId) return;

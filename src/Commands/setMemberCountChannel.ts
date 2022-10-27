@@ -1,11 +1,11 @@
 import {
     ApplicationCommandOptionType,
+    Channel,
     ChatInputCommandInteraction,
     PermissionsBitField,
-    VoiceChannel
 } from "discord.js";
-import { Bot } from "../Structures/Bot";
-import {updateMemberCountChannel} from "../Structures/db/updateMemberCountChannel";
+import {Bot} from "../Structures/Bot";
+import {updateMemberCountChannel} from "../Structures/db/Guild";
 
 
 module.exports = {
@@ -13,38 +13,42 @@ module.exports = {
     description: "set the member count channel",
     defaultMemberPermissions: PermissionsBitField.StageModerator,
     options: [
-
-            {
-                type: ApplicationCommandOptionType.Channel,
-                name: "channel",
-                description: "channel",
-                required: true
-            }
+        {
+            type: ApplicationCommandOptionType.Boolean,
+            name: "enable",
+            description: "set enable or disable the member count channel",
+            required: true
+        },
+        {
+            type: ApplicationCommandOptionType.Channel,
+            name: "channel",
+            description: "channel",
+            required: false
+        },
     ],
 
     async execute(client: Bot) {
 
         const interaction = client.interaction as ChatInputCommandInteraction
 
-        const { options, guildId, member, guild } = interaction
+        const { options, guildId, guild } = interaction
 
-        const channelQuery = options.getChannel("channel") as VoiceChannel
+        const channelQuery = options.getChannel("channel") as Channel
+        const enable = options.getBoolean("enable") as boolean
 
-        // @ts-ignore
-        if (!member?.permissions.has(PermissionsBitField.StageModerator)) return;
+        if (enable && !channelQuery) {
+            return client.Reply(interaction, "set log", "❌", "You have to input a channel if you want to set on the member count display", true)
+        }
 
-        await updateMemberCountChannel(guildId as string, channelQuery, client)
-
+        await updateMemberCountChannel(guildId as string, channelQuery, enable, client)
 
         const memberCount = guild?.memberCount.toString()
 
         if (!memberCount) return;
 
+        // @ts-ignore
         await channelQuery.setName(`Member count - ${memberCount}`)
 
-
-        await client.Reply(interaction, "Set log", "✅", `The member count channel is now : ${channelQuery}`, true)
-
-
+        await client.Reply(interaction, "Set log", "✅", `The member count channel is now ${enable ? `set on : **${channelQuery}**` : '**disable**'}`, true)
     }
 }
