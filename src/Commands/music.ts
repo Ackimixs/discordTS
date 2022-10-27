@@ -78,19 +78,6 @@ module.exports = {
         },
         {
             type: ApplicationCommandOptionType.Subcommand,
-            name: "set",
-            description: "set the full music system",
-            options: [
-                {
-                    type: ApplicationCommandOptionType.Boolean,
-                    name: "mode",
-                    description: "enable or disable the full music system",
-                    required: true
-                }
-            ]
-        },
-        {
-            type: ApplicationCommandOptionType.Subcommand,
             name: "spotify",
             description: "spotify playlist",
             options: [

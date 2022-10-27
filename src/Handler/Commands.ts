@@ -11,7 +11,6 @@ module.exports = async (client: Bot) => {
 
     const pushCommand = async () => {
         const guilds = await client.guilds.fetch();
-
         for (let guild of guilds.values()) {
             const CommandsArray: ApplicationCommandDataResolvable[] = []
             commandFiles.map(async (file) => {
@@ -25,15 +24,12 @@ module.exports = async (client: Bot) => {
                 await client.commands.set(command.name, command);
                 CommandsArray.push(command);
             })
-
             client.guilds.fetch(guild.id).then(guild => guild.commands.set(CommandsArray));
         }
+        await setInterval(async () => await pushCommand(), ms("60s"))
     }
 
     client.once('ready', async () => {
         await pushCommand()
-        await setInterval(async () => {
-            await pushCommand()
-        }, (ms("60s")))
     })
 }
