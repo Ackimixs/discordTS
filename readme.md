@@ -4,7 +4,7 @@ Another discord bot made with [discord.js](https://github.com/discordjs/discord.
 Inspired by [androz discord bot](https://github.com/Androz2091/discord-music-bot)  
 the bot have a multi guild system with mongodb, music system, logs system  
     
-blindtest system v1.0.1
+blindtest system v1.1.0
 
 ## how to use
 
@@ -42,8 +42,6 @@ I'm just a fucking junior dev, so if you have any issue please tell me
 i've some problem with all play command (spotify, insert and play)  
 
 
-
 ## In the future
 * Better music system and fix some issue with it
-* blindtest system upgrade to 1.0
 * a better bot in general
