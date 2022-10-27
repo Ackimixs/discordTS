@@ -1,4 +1,4 @@
-import { GuildMember, InteractionType} from "discord.js"
+import { GuildMember} from "discord.js"
 import { Bot } from "src/Structures/Bot";
 
 module.exports = {
@@ -19,8 +19,9 @@ module.exports = {
 
         if (!guild) return
 
+        const memberCount = guild.memberCount
         // @ts-ignore
-        channel.setName(guild.memberCount.toString());
+        channel.setName(`Member count - ${memberCount}`);
 
     }
 }

@@ -19,7 +19,6 @@ const Spotify = require("spotify-api.js");
 export class Bot extends Client {
     commands: Collection<string, Command>
     config: Config
-    interaction: CommandInteraction | null
     spotifyClient: SpotifyClient
     player: Player
 
@@ -27,9 +26,8 @@ export class Bot extends Client {
         super(options);
         this.commands = new Collection()
         this.config = config
-        this.interaction = null
         this.player = new Player(this)
-        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.spotifyCLientId, clientSecret: this.config.spotifySecret } });
+        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.env.spotifyCLientId, clientSecret: this.config.env.spotifySecret } });
     }
 
     async Reply(interaction: CommandInteraction, title: string, emoji: string ,content: string, ephemeral: boolean = false): Promise<void> {

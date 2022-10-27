@@ -36,6 +36,10 @@ export const Guild = new Schema<GuildBot>({
         enable: {
             type: Schema.Types.Boolean,
             default: false
+        },
+        lastName: {
+            type: Schema.Types.String,
+            default: ""
         }
     },
     blindtestSession: Object,
@@ -60,7 +64,8 @@ export interface GuildBot {
     },
     memberCoutChannel?: {
         id: string,
-        enable: boolean
+        enable: boolean,
+        lastName: string
     },
     blindtestSession: BlindtestSession,
     musicSystem: boolean

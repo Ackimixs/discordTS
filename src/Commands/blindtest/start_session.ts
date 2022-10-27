@@ -1,10 +1,11 @@
 import { Bot } from "src/Structures/Bot";
-import {ChatInputCommandInteraction, EmbedBuilder, GuildResolvable} from "discord.js";
+import {ChatInputCommandInteraction, GuildResolvable} from "discord.js";
 import {getRandomTrack, randomTrack} from "../../Structures/db/Artist";
 import ms from "ms";
 import {BlindtestSession, SessionUser} from "src/Structures/db/Schema/Guild";
 import {createEmbed} from "../../utils/embed";
 import {updateGuild} from "../../Structures/db/Guild";
+import { BlindtestLeaderboardEmbed } from "../../utils/leaderBoardEmebd";
 
 module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) => {
 
@@ -14,7 +15,7 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
 
     await interaction.followUp('a blindest is loading ...')
 
-    if (!options || !guild || !user) return
+    if (!options || !guild || !user || !channel) return
 
     const numberOfTrack = options.getNumber("number") as number
 
@@ -98,7 +99,7 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
             await queue?.destroy()
             await updateGuild(guild.id, guildBlindtest);
             const embed = await BlindtestLeaderboardEmbed(blindtestSession, client);
-            await interaction.followUp({embeds: [embed]})
+            await channel.send({embeds: [embed]})
         }
 
         await queue?.play(blindtestSession.result.get(blindtestSession.round.toString())?.Track)
@@ -114,7 +115,7 @@ const verifyAllUser = async (session: BlindtestSession, client: Bot) => {
 
     if (!session || !session.member) return;
 
-    for (let [key, value] of session.member) {
+    for (let value of session.member.values()) {
 
         const embed = await createEmbed(client);
 
@@ -152,40 +153,4 @@ const verifyAllUser = async (session: BlindtestSession, client: Bot) => {
         await user.send({embeds: [embed]});
     }
 
-}
-
-
-export const BlindtestLeaderboardEmbed = async (session: BlindtestSession, client: Bot): Promise<EmbedBuilder> => {
-
-    const embed = await createEmbed(client);
-
-    embed.setTitle("Blindtest session")
-
-    let leaderboardUser: string = '';
-
-    const sortedUser = new Map([...session.member.entries()].sort((a, b) => b[1].point - a[1].point).slice(0, 3));
-
-    let i = 1;
-    for (let value of sortedUser.values()) {
-        leaderboardUser += `${i} - **${value.tag}**\n`
-        i++;
-    }
-
-    embed.addFields({
-        name: "User leaderboard",
-        value: leaderboardUser ?? ""
-    })
-
-    let response: string = '';
-
-    for (let [key, value] of session.result) {
-        response += `${parseInt(key, 10)+1} - **${value.trackName}** by **${value.artistName}** [link](${value.trackUrl})\n`
-    }
-
-    embed.addFields({
-        name: "Track info :",
-        value: response ?? ""
-    })
-
-    return embed
 }

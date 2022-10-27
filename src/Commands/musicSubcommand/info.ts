@@ -1,7 +1,6 @@
 import {Queue} from "discord-player";
 import { ChatInputCommandInteraction } from "discord.js";
 import { Bot } from "src/Structures/Bot";
-import {createEmbed} from "../../utils/embed";
 
 module.exports = async (client: Bot, queue: Queue, interaction: ChatInputCommandInteraction): Promise<void> => {
 

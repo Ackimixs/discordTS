@@ -2,7 +2,7 @@ import {
     ApplicationCommandOptionType,
     Channel,
     ChatInputCommandInteraction,
-    PermissionsBitField,
+    PermissionsBitField, TextChannel, VoiceChannel,
 } from "discord.js";
 import {Bot} from "../Structures/Bot";
 import {updateMemberCountChannel} from "../Structures/db/Guild";
@@ -27,11 +27,18 @@ module.exports = {
         },
     ],
 
-    async execute(client: Bot) {
-
-        const interaction = client.interaction as ChatInputCommandInteraction
+    async execute(client: Bot, interaction: ChatInputCommandInteraction) {
 
         const { options, guildId, guild } = interaction
+
+        const lastChannel = client.config.Guild.get(guildId as string)?.memberCoutChannel;
+
+        if (lastChannel && lastChannel.id) {
+            const channel = await client.channels.fetch(lastChannel?.id as string) as VoiceChannel | TextChannel
+            if (channel) {
+                await channel.setName(lastChannel.lastName)
+            }
+        }
 
         const channelQuery = options.getChannel("channel") as Channel
         const enable = options.getBoolean("enable") as boolean
@@ -40,7 +47,7 @@ module.exports = {
             return client.Reply(interaction, "set log", "❌", "You have to input a channel if you want to set on the member count display", true)
         }
 
-        await updateMemberCountChannel(guildId as string, channelQuery, enable, client)
+        await updateMemberCountChannel(guildId as string, channelQuery, enable, client);
 
         const memberCount = guild?.memberCount.toString()
 

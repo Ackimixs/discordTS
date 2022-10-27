@@ -1,5 +1,5 @@
 /node_modules/
 /dist/
-.env
+.envs
 package-lock.json
 /.fleet/

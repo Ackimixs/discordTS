@@ -2,6 +2,7 @@ import {ActivityType, PresenceStatusData} from "discord.js";
 import { Bot } from "src/Structures/Bot";
 import ms from 'ms'
 import { GuildBot, GuildDB } from "../Structures/db/Schema/Guild";
+import {getAllGuild} from "../Structures/db/Guild";
 const { createGuild } = require('../Structures/db/Guild')
 
 module.exports = {
@@ -11,8 +12,6 @@ module.exports = {
     async execute(client: Bot) {
 
         const activityName = ["made with ♡", "trying to be correct", "inspired by Androz2091 discord bot", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct"]
-
-        await client.user?.setPresence({ activities: [{ name: "starting..." }], status: "dnd"});
 
         let status: PresenceStatusData;
         let activity: string;
@@ -29,7 +28,7 @@ module.exports = {
         }, ms("3m"))
 
 
-        const guildDB: GuildBot[] = await GuildDB.find()
+        const guildDB: GuildBot[] = await getAllGuild()
 
         for (let guild of guildDB) {
             client.config.Guild?.set(guild.guildId, guild)

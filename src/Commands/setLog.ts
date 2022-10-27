@@ -48,12 +48,9 @@ module.exports = {
         },
     ],
 
-    async execute(client: Bot) {
-        const interaction = client.interaction
+    async execute(client: Bot, interaction: ChatInputCommandInteraction) {
 
-        if (!interaction) return
-
-        const { options, guildId, member } = interaction as ChatInputCommandInteraction
+        const { options, guildId } = interaction
 
         const subCommand = options.getSubcommand()
 

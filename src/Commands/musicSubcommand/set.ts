@@ -15,5 +15,5 @@ module.exports = async (client: Bot, queue: Queue, interaction: ChatInputCommand
 
     await updateGuild(guild?.id as string, guildData);
 
-    return client.Reply(interaction, "music", "✅", `the the music system to : **${fullSystem ? "full": "min"}**`);
+    return client.Reply(interaction, "music", "✅", `the the music system to : **${fullSystem ? "full": "min"}** \n (Ps: you have to wait maximum 1min)`);
 }

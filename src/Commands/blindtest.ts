@@ -65,15 +65,9 @@ module.exports = {
         },
     ],
 
+    async execute(client: Bot, interaction: ChatInputCommandInteraction) {
 
-    async execute(client: Bot) {
+        await require(`./blindtest/${interaction.options.getSubcommand()}`)(client, interaction)
 
-        const interaction = client.interaction as ChatInputCommandInteraction
-
-        if (!interaction) return;
-
-        const {options} = interaction
-
-        await require(`./blindtest/${options.getSubcommand()}`)(client, interaction)
     }
 }

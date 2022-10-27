@@ -9,7 +9,7 @@ module.exports = async (client: Bot) => {
 
     const commandFiles = fs.readdirSync(`./${client.config.dev}/Commands/`).filter(file => (file.endsWith(client.config.dev === "src" ? ".ts" : '.js')));
 
-    client.once('ready', async () => {
+    const pushCommand = async () => {
         const guilds = await client.guilds.fetch();
 
         for (let guild of guilds.values()) {
@@ -28,26 +28,12 @@ module.exports = async (client: Bot) => {
 
             client.guilds.fetch(guild.id).then(guild => guild.commands.set(CommandsArray));
         }
+    }
 
+    client.once('ready', async () => {
+        await pushCommand()
         await setInterval(async () => {
-            const guilds = await client.guilds.fetch();
-
-            for (let guild of guilds.values()) {
-                const CommandsArray: ApplicationCommandDataResolvable[] = []
-                commandFiles.map(async (file) => {
-                    const command = require(`../Commands/${file}`);
-                    if (file === "music.js") {
-                        const full = client.config.Guild.get(guild.id)?.musicSystem;
-                        if (!full) {
-                            command.options = command.options.filter((option: any) => minMusicCommand.includes(option.name))
-                        }
-                    }
-                    await client.commands.set(command.name, command);
-                    CommandsArray.push(command);
-                })
-
-                client.guilds.fetch(guild.id).then(guild => guild.commands.set(CommandsArray));
-            }
-        }, (ms("10m")))
+            await pushCommand()
+        }, (ms("60s")))
     })
 }

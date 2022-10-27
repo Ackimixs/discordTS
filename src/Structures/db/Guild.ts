@@ -1,7 +1,8 @@
 import {createSession} from "./Session";
-import {GuildBot} from "./Schema/Guild";
+import {BlindtestSession, GuildBot, SessionUser} from "./Schema/Guild";
 import { Channel } from "discord.js";
 import { Bot } from "../Bot";
+import {randomTrack} from "./Artist";
 const { GuildDB } = require('./Schema/Guild')
 
 export const createGuild = async (guildId: string) : Promise<GuildBot> => {
@@ -20,10 +21,30 @@ export const createGuild = async (guildId: string) : Promise<GuildBot> => {
     return guild;
 }
 
-export const getGuild = async (guildId: string) => {
-    return GuildDB.findOne({
+export const deleteGuild = async (guildId: string): Promise<boolean> => {
+    return GuildDB.findOneAndDelete({guildId})
+}
+
+export const getAllGuild = async (): Promise<GuildBot[]> => {
+    const data: GuildBot[] = await GuildDB.find()
+
+    for (let guild of data) {
+        guild.blindtestSession.member = new Map<string, SessionUser>(Object.entries(guild.blindtestSession.member))
+        guild.blindtestSession.result = new Map<string, randomTrack>(Object.entries(guild.blindtestSession.result))
+    }
+
+    return data;
+}
+
+export const getGuild = async (guildId: string): Promise<GuildBot> => {
+    const guild: GuildBot = await GuildDB.findOne({
         guildId
     });
+
+    guild.blindtestSession.member = new Map<string, SessionUser>(Object.entries(guild.blindtestSession.member))
+    guild.blindtestSession.result = new Map<string, randomTrack>(Object.entries(guild.blindtestSession.result))
+
+    return guild;
 }
 
 export const updateGuild = async (guildId: string, guild: GuildBot) => {
@@ -52,7 +73,9 @@ export const updateMemberCountChannel = async (guildId: string, memberCount: Cha
 
     const channel = {
         id: enable ? memberCount.id : "",
-        enable
+        enable,
+        // @ts-ignore
+        lastName: memberCount.name
     }
 
     await GuildDB.findOneAndUpdate({guildId}, {

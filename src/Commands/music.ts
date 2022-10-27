@@ -84,7 +84,7 @@ module.exports = {
                 {
                     type: ApplicationCommandOptionType.Boolean,
                     name: "mode",
-                    description: "set to enable or disable",
+                    description: "enable or disable the full music system",
                     required: true
                 }
             ]
@@ -253,13 +253,9 @@ module.exports = {
         },
     ],
 
-    async execute(client: Bot) {
+    async execute(client: Bot, interaction: ChatInputCommandInteraction) {
 
-        const interaction = client.interaction
-
-        if (!interaction) return;
-
-        const { options, guild } = interaction as ChatInputCommandInteraction;
+        const { options, guild } = interaction;
 
         if (!client.config.Guild.get(guild?.id as string)?.blindtestSession?.terminate) {
             return await interaction.reply({content: "You can't use music system with a blindtest session i'm sorry  😥", ephemeral: true})
