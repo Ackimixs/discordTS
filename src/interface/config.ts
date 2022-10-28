@@ -4,7 +4,7 @@ import { GuildBot } from "src/Structures/db/Schema/Guild";
 export interface Config {
     env: {
         token: string,
-        spotifyCLientId: string,
+        spotifyClientId: string,
         spotifySecret: string,
         mongoUri: string,
     }

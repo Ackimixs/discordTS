@@ -23,11 +23,9 @@ module.exports = async (client) => {
             });
             client.guilds.fetch(guild.id).then(guild => guild.commands.set(CommandsArray));
         }
+        await setInterval(async () => await pushCommand(), (0, ms_1.default)("60s"));
     };
     client.once('ready', async () => {
         await pushCommand();
-        await setInterval(async () => {
-            await pushCommand();
-        }, ((0, ms_1.default)("60s")));
     });
 };

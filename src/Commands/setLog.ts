@@ -57,11 +57,13 @@ module.exports = {
         let channelQuery = options.getChannel("channel") as Channel
         const enable = options.getBoolean("enable_log") || options.getBoolean("enable_error") || false as boolean
 
+        console.log(enable)
+
         if (enable && !channelQuery) {
             return client.Reply(interaction, "set log", "❌", "You have to input a channel if you want to set on the log", true)
         }
 
-        if (!channelQuery || !channelQuery.isTextBased()) return client.Reply(interaction, "Commmand log", "❌", "The channel provided is not a text based channel", true)
+        if ((!channelQuery || !channelQuery.isTextBased()) && enable) return client.Reply(interaction, "Commmand log", "❌", "The channel provided is not a text based channel", true)
 
         switch (subCommand) {
             case "log": {

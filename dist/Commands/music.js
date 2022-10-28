@@ -76,19 +76,6 @@ module.exports = {
         },
         {
             type: discord_js_1.ApplicationCommandOptionType.Subcommand,
-            name: "set",
-            description: "set the full music system",
-            options: [
-                {
-                    type: discord_js_1.ApplicationCommandOptionType.Boolean,
-                    name: "mode",
-                    description: "enable or disable the full music system",
-                    required: true
-                }
-            ]
-        },
-        {
-            type: discord_js_1.ApplicationCommandOptionType.Subcommand,
             name: "spotify",
             description: "spotify playlist",
             options: [

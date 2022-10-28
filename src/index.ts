@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { Config } from "./interface/config";
 import {GuildBot} from "./Structures/db/Schema/Guild";
 import mongoose from "mongoose";
-
+const { token, spotifyClientId, spotifyClientSecret, mongoUri} = require("./config")
 const { GatewayIntentBits } = require("discord-api-types/v10");
 const { Partials, Collection } = require("discord.js");
 const { Bot } = require('./Structures/Bot');
@@ -10,16 +10,14 @@ const validEnv = require('./utils/validEnv');
 
 (async () => {
 
-    if (!validEnv()) {
-        throw new Error('Env is not valid')
-    }
+    validEnv()
 
     const config: Config = {
         env: {
-            token: process.env.BOT_TOKEN as string,
-            spotifyCLientId: process.env.SPOTIFY_CLIENTID as string,
-            spotifySecret: process.env.SPOTIFY_SECRET as string,
-            mongoUri: process.env.DATABASE_URI as string,
+            token: token as string,
+            spotifyClientId: spotifyClientId as string,
+            spotifySecret: spotifyClientSecret as string,
+            mongoUri: mongoUri as string,
         },
         color: "Random",
         dev: process.env.MODE || "dist",

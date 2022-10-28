@@ -17,7 +17,7 @@ class Bot extends discord_js_1.Client {
         this.commands = new discord_js_1.Collection();
         this.config = config;
         this.player = new discord_player_1.Player(this);
-        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.env.spotifyCLientId, clientSecret: this.config.env.spotifySecret } });
+        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.env.spotifyClientId, clientSecret: this.config.env.spotifySecret } });
     }
     async Reply(interaction, title, emoji, content, ephemeral = false) {
         const e = await (0, embed_1.createEmbed)(this);

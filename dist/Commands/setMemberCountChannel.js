@@ -23,7 +23,7 @@ module.exports = {
     async execute(client, interaction) {
         const { options, guildId, guild } = interaction;
         const lastChannel = client.config.Guild.get(guildId)?.memberCoutChannel;
-        if (lastChannel && lastChannel.id) {
+        if (lastChannel && lastChannel.id && lastChannel.lastName.length > 1) {
             const channel = await client.channels.fetch(lastChannel?.id);
             if (channel) {
                 await channel.setName(lastChannel.lastName);

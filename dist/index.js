@@ -3,20 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const fs = tslib_1.__importStar(require("fs"));
 const mongoose_1 = tslib_1.__importDefault(require("mongoose"));
+const { token, spotifyClientId, spotifyClientSecret, mongoUri } = require("./config");
 const { GatewayIntentBits } = require("discord-api-types/v10");
 const { Partials, Collection } = require("discord.js");
 const { Bot } = require('./Structures/Bot');
 const validEnv = require('./utils/validEnv');
 (async () => {
-    if (!validEnv()) {
-        throw new Error('Env is not valid');
-    }
+    validEnv();
     const config = {
         env: {
-            token: process.env.BOT_TOKEN,
-            spotifyCLientId: process.env.SPOTIFY_CLIENTID,
-            spotifySecret: process.env.SPOTIFY_SECRET,
-            mongoUri: process.env.DATABASE_URI,
+            token: token,
+            spotifyClientId: spotifyClientId,
+            spotifySecret: spotifyClientSecret,
+            mongoUri: mongoUri,
         },
         color: "Random",
         dev: process.env.MODE || "dist",

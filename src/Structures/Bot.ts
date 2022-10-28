@@ -27,7 +27,7 @@ export class Bot extends Client {
         this.commands = new Collection()
         this.config = config
         this.player = new Player(this)
-        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.env.spotifyCLientId, clientSecret: this.config.env.spotifySecret } });
+        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.env.spotifyClientId, clientSecret: this.config.env.spotifySecret } });
     }
 
     async Reply(interaction: CommandInteraction, title: string, emoji: string ,content: string, ephemeral: boolean = false): Promise<void> {
