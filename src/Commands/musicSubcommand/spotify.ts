@@ -1,18 +1,17 @@
 import {ChatInputCommandInteraction, GuildResolvable} from "discord.js";
 
-const Spotify = require("spotify-api.js");
 import {Queue} from "discord-player";
 import { Bot } from "src/Structures/Bot";
 import {createEmbed} from "../../utils/embed";
 import { Album, ClientSearchOptions, Episode, SearchType, Track } from "spotify-api.js";
 
-module.exports = async (client: Bot, queue: Queue): Promise<void> => {
+module.exports = async (client: Bot, queue: Queue, interaction: ChatInputCommandInteraction): Promise<void> => {
 
-    const { options, user, guild, channel, member } = client.interaction as ChatInputCommandInteraction
+    const { options, user, guild, channel, member } = interaction
 
-    await client.interaction?.deferReply();
+    await interaction?.deferReply();
 
-    const spotifyClient = new Spotify.Client({ token: { clientID: client.config.spotifyCLientId, clientSecret: client.config.spotifySecret } });
+    const spotifyClient = client.spotifyClient
 
     const query = options.getString('name') as string
 
@@ -22,9 +21,9 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
     const { albums, tracks, episodes } = await spotifyClient.search(query, option);
 
-    const musicUrl: Album[] | Episode[] | Track[] = albums ? albums : tracks ? tracks : episodes ? episodes : null
+    const musicUrl: any = albums ? albums : tracks ? tracks : episodes ? episodes : null
 
-    if (musicUrl.length < 1) return await client.editReply("Music command", "❌", `I'm sorry but track **${query}** not found`);
+    if (!musicUrl || !musicUrl[0]) return await client.editReply(interaction, "Music command", "❌", `I'm sorry but track **${query}** not found`);
 
     let url: string = musicUrl[0].externalURL?.spotify
 
@@ -50,7 +49,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         }
     } catch (err) {
         client.player.deleteQueue(guild as GuildResolvable)
-        return await client.editReply("Error music", "❌", "Could not join your voice channel!");
+        return await client.editReply(interaction, "Error music", "❌", "Could not join your voice channel!");
     }
 
     if (!url) return;
@@ -59,7 +58,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         requestedBy: user,
     })
 
-    if (!tracksPlayer || !tracksPlayer.tracks.length) return await client.editReply("Music command", "❌", `I'm sorry but track **${query}** not found`);
+    if (!tracksPlayer || !tracksPlayer.tracks.length) return await client.editReply(interaction, "Music command", "❌", `I'm sorry but track **${query}** not found`);
 
 
     tracksPlayer.playlist ? queue.addTracks(tracksPlayer.tracks) : queue.addTrack(tracksPlayer.tracks[0]);
@@ -73,5 +72,5 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     .setURL(tracksPlayer.tracks[0].url)
 
     
-    await client.interaction?.editReply({embeds: [embed]})
+    await interaction.editReply({embeds: [embed]})
 }

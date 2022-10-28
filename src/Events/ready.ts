@@ -2,7 +2,8 @@ import {ActivityType, PresenceStatusData} from "discord.js";
 import { Bot } from "src/Structures/Bot";
 import ms from 'ms'
 import { GuildBot, GuildDB } from "../Structures/db/Schema/Guild";
-const { createGuild } = require('../Structures/db/createGuild')
+import {getAllGuild} from "../Structures/db/Guild";
+const { createGuild } = require('../Structures/db/Guild')
 
 module.exports = {
     name: "ready",
@@ -10,12 +11,7 @@ module.exports = {
 
     async execute(client: Bot) {
 
-        // @ts-ignore
-        await client.logger("Event", "Ready", `Discord Bot log as ${client?.user?.tag || "no name"}`)
-
         const activityName = ["made with ♡", "trying to be correct", "inspired by Androz2091 discord bot", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct"]
-
-        await client.user?.setPresence({ activities: [{ name: "starting..." }], status: "dnd"});
 
         let status: PresenceStatusData;
         let activity: string;
@@ -32,19 +28,20 @@ module.exports = {
         }, ms("3m"))
 
 
+        const guildDB: GuildBot[] = await getAllGuild()
 
-        const guildDB: GuildBot[] = await GuildDB.find()
-
-        guildDB.forEach(guild => {
+        for (let guild of guildDB) {
             client.config.Guild?.set(guild.guildId, guild)
-        })
+        }
 
-        const guildsBot = await client.guilds.cache
+        const guildsBot = await client.guilds.fetch();
 
-        guildsBot.forEach(guild => {
+        for (let guild of guildsBot.values()) {
             if (!client.config.Guild?.has(guild.id)) {
-                createGuild(guild.id, client);
+                client.config.Guild.set(guild.id, await createGuild(guild.id))
             }
-        })
+        }
+
+        await client.logger("Event", "Ready", `Discord Bot log as ${client?.user?.tag || "no name"}`)
     }
 }

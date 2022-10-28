@@ -2,11 +2,11 @@ import { Queue, QueueRepeatMode } from "discord-player";
 import { Bot } from "src/Structures/Bot";
 import {ChatInputCommandInteraction, GuildResolvable} from "discord.js";
 
-module.exports = async (client: Bot, queue: Queue): Promise<void> => {
+module.exports = async (client: Bot, queue: Queue, interaction: ChatInputCommandInteraction): Promise<void> => {
 
-    if (!client.interaction) return;
+    if (!interaction) return;
 
-    const { options, user, guild, channel, member } = client.interaction as ChatInputCommandInteraction;
+    const { options, user, guild, channel, member } = interaction
 
     queue = await client.player.createQueue(guild as GuildResolvable, {
         metadata: {
@@ -28,14 +28,14 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         }
     } catch (err) {
         client.player.deleteQueue(guild as GuildResolvable)
-        return await client.Reply("Error music", "❌", "Could not join your voice channel!", true);
+        return await client.Reply(interaction, "Error music", "❌", "Could not join your voice channel!", true);
     }
 
     const tracks = await client.player.search("https://www.youtube.com/watch?v=o5u0iyr8DT4&list=OLAK5uy_kWvGPCOHvJjV3-dr3t1dDARSwYgvCyYaE", {
         requestedBy: user,
     })
 
-    if (!tracks || !tracks.tracks.length) return await client.Reply("Music command", "❌", `that can't be deleted`, true);
+    if (!tracks || !tracks.tracks.length) return await client.Reply(interaction, "Music command", "❌", `no track found`, true);
 
 
     tracks.playlist ? queue.addTracks(tracks.tracks) : queue.addTrack(tracks.tracks[0]);
@@ -54,5 +54,5 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
 
     queue.setRepeatMode(QueueRepeatMode.QUEUE);
 
-    return client.Reply("Oops", "👹", "You want to play lets play", true);
+    return client.Reply(interaction, "Oops", "👹", "You want to play lets play", true);
 }

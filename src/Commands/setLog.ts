@@ -1,7 +1,6 @@
 import {ApplicationCommandOptionType, Channel, ChatInputCommandInteraction, PermissionsBitField} from "discord.js";
-import { Bot } from "../Structures/Bot";
-import { updatelogChannel } from "../Structures/db/updateLogChannel";
-import {updateErrorChannel} from "../Structures/db/updateErrorChannel";
+import {Bot} from "../Structures/Bot";
+import {updateErrorChannel, updatelogChannel} from "../Structures/db/Guild";
 
 
 module.exports = {
@@ -15,11 +14,17 @@ module.exports = {
             description: "set the general log channel",
             options: [
                 {
+                    type: ApplicationCommandOptionType.Boolean,
+                    name: "enable_log",
+                    description: "set enable or disable the log system",
+                    required: true
+                },
+                {
                     type: ApplicationCommandOptionType.Channel,
                     name: "channel",
                     description: "channel",
-                    required: true
-                }
+                    required: false
+                },
             ]
         },
         {
@@ -28,45 +33,56 @@ module.exports = {
             description: "set the error log channel",
             options: [
                 {
+                    type: ApplicationCommandOptionType.Boolean,
+                    name: "enable_error",
+                    description: "set enable or disable the error log system",
+                    required: true
+                },
+                {
                     type: ApplicationCommandOptionType.Channel,
                     name: "channel",
                     description: "channel",
-                    required: true
-                }
+                    required: false
+                },
             ]
-        }
+        },
     ],
 
-    async execute(client: Bot) {
-        const { options, guildId, member } = client.interaction as ChatInputCommandInteraction
+    async execute(client: Bot, interaction: ChatInputCommandInteraction) {
+
+        const { options, guildId } = interaction
 
         const subCommand = options.getSubcommand()
 
+        let channelQuery = options.getChannel("channel") as Channel
+        const enable = options.getBoolean("enable_log") || options.getBoolean("enable_error") || false as boolean
 
-        const channelQuery = options.getChannel("channel") as Channel
+        console.log(enable)
 
-        // @ts-ignore
-        if (!member?.permissions.has(PermissionsBitField.StageModerator))
+        if (enable && !channelQuery) {
+            return client.Reply(interaction, "set log", "❌", "You have to input a channel if you want to set on the log", true)
+        }
 
-        if (!channelQuery || !channelQuery.isTextBased()) return client.Reply("Commmand log", "❌", "The channel provided is not a text based channel", true)
+        if ((!channelQuery || !channelQuery.isTextBased()) && enable) return client.Reply(interaction, "Commmand log", "❌", "The channel provided is not a text based channel", true)
 
         switch (subCommand) {
             case "log": {
-                await updatelogChannel(guildId as string, channelQuery, client)
 
-                await client.Reply("Set log", "✅", `The log channel is now : ${channelQuery}`)
+                await updatelogChannel(guildId as string, channelQuery, enable, client)
+
+                await client.Reply(interaction, "Set log", "✅", `The log channel is now ${enable ? `set on : **${channelQuery}**` : '**disable**'}`, true)
 
                 break;
             }
             case "error": {
-                await updateErrorChannel(guildId as string, channelQuery, client)
+                await updateErrorChannel(guildId as string, channelQuery, enable, client)
 
-                await client.Reply("Set log", "✅", `The log channel is now : ${channelQuery}`)
+                await client.Reply(interaction, "Set log", "✅", `The error log channel is now ${enable ? `set on : **${channelQuery}**` : '**disable**'}`, true)
 
                 break;
             }
             default: {
-                return client.Reply("Commmand log", "❌", "Error while updating the channel", true)
+                return client.Reply(interaction, "Commmand log", "❌", "Error while updating the channel", true)
             }
         }
     }

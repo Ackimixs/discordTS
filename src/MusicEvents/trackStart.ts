@@ -7,6 +7,9 @@ module.exports = {
     name: "trackStart",
 
     async execute(queue: Queue, track: Track, client: Bot) {
+        const guild = queue.guild
+
+        if (!client.config.Guild.get(guild.id)?.blindtestSession?.terminate) return;
 
         const voiceChannel = queue.connection.channel
 

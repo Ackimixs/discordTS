@@ -1,61 +1,60 @@
 import {
-    Channel,
     Client,
     ClientOptions,
     Collection,
     CommandInteraction,
     EmbedBuilder,
     Guild,
-    TextBasedChannel
 } from "discord.js";
 import { Command } from "src/interface/command";
 import { Config } from "src/interface/config";
 import {Player} from "discord-player";
-import {getGuild} from "./db/getGuild";
+import {getGuild} from "./db/Guild";
 import { GuildBot } from "./db/Schema/Guild";
 import { createEmbed } from "../utils/embed";
-import * as fs from "fs";
-const consola = require('consola')
+import { Client as SpotifyClient } from "spotify-api.js";
+const consola = require('consola');
+const Spotify = require("spotify-api.js");
 
 export class Bot extends Client {
     commands: Collection<string, Command>
     config: Config
-    interaction: CommandInteraction | null
-
+    spotifyClient: SpotifyClient
     player: Player
+
     constructor(options: ClientOptions, config: Config) {
         super(options);
         this.commands = new Collection()
         this.config = config
-        this.interaction = null
         this.player = new Player(this)
+        this.spotifyClient = new Spotify.Client({ token: { clientID: this.config.env.spotifyClientId, clientSecret: this.config.env.spotifySecret } });
     }
 
-    async Reply(title: string, emoji: string ,content: string, ephemeral: boolean = false): Promise<void> {
+    async Reply(interaction: CommandInteraction, title: string, emoji: string ,content: string, ephemeral: boolean = false): Promise<void> {
         const e = await createEmbed(this)
         e.setDescription(emoji + ' | ' + content).setTitle(title)
 
         try {
-            await this.interaction?.reply({ embeds: [e], ephemeral: ephemeral});
+            await interaction?.reply({ embeds: [e], ephemeral: ephemeral});
         } catch (e) {
             console.log(e);
         }
     }
 
-    async editReply(title: string, emoji: string ,content: string): Promise<void> {
+    async editReply(interaction: CommandInteraction, title: string, emoji: string ,content: string): Promise<void> {
         const e = await createEmbed(this)
         e.setDescription(emoji + ' | ' + content).setTitle(title)
 
         try {
-            await this.interaction?.reply({ embeds: [e]});
+            await interaction?.editReply({ embeds: [e]});
         } catch (e) {
             console.log(e);
         }
     }
 
-    async replyEmbed(embed: EmbedBuilder): Promise<void> {
+    async replyEmbed(interaction: CommandInteraction, embed: EmbedBuilder): Promise<void> {
         try {
-            await this.interaction?.reply({ embeds: [embed]});
+            await interaction?.reply({ embeds: [embed]});
         } catch (e) {
             console.log(e);
         }
@@ -67,6 +66,8 @@ export class Bot extends Client {
         if (!guild) return
 
         const guildDB: GuildBot = await getGuild(guild.id)
+
+        if (!guildDB.logChannel?.enable) return
 
         const channelId = guildDB.logChannel?.id
 

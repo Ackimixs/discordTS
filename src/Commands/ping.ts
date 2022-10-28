@@ -1,3 +1,4 @@
+import { ChatInputCommandInteraction } from "discord.js";
 import { Bot } from "src/Structures/Bot";
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
     category: "Information",
 
 
-    async execute(client: Bot) {
-        return client?.Reply("Ping", "✅", `The current ping is \`${client.ws.ping} ms\``, true);
+    async execute(client: Bot, interaction: ChatInputCommandInteraction) {
+        return client?.Reply(interaction, "Ping", "✅", `The current ping is \`${client.ws.ping} ms\``, true);
     }
 }

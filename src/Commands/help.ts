@@ -1,5 +1,5 @@
 import { Bot } from "src/Structures/Bot";
-import {EmbedBuilder} from "discord.js";
+import {ChatInputCommandInteraction, EmbedBuilder} from "discord.js";
 
 module.exports = {
     name: "help",
@@ -7,16 +7,13 @@ module.exports = {
     category: "Information",
 
 
-    async execute(client: Bot) {
+    async execute(client: Bot, interaction: ChatInputCommandInteraction) {
         const commands = client.commands
 
         const embed = new EmbedBuilder().setTitle('Command from AckiBot').setDescription("> here the list aff all command available with this bot")
 
         commands.forEach(command => {
-
-
             let options = ''
-
             command.options?.forEach(option => options += `\n> \`/${command.name} ${option.name}\` => ${option.description}`)
 
             embed.addFields({
@@ -25,6 +22,6 @@ module.exports = {
             })
         })
 
-        await client.interaction?.reply({embeds: [embed]})
+        await interaction?.reply({embeds: [embed]})
     }
 }

@@ -20,9 +20,7 @@ module.exports = {
             return client.commands.delete(command)
         }
 
-        client.interaction = interaction
-
-        await command.execute(client);
+        await command.execute(client, interaction);
 
         await client.logger("Command", interaction.commandName, ` user : ${user.tag} in guild : ${guild?.name}`, guild)
     }

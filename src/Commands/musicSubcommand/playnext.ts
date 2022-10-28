@@ -2,12 +2,12 @@ import {Queue} from "discord-player";
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { Bot } from "src/Structures/Bot";
 
-module.exports = async (client: Bot, queue: Queue): Promise<void> => {
+module.exports = async (client: Bot, queue: Queue, interaction: ChatInputCommandInteraction): Promise<void> => {
 
-    const { options, user } = client.interaction as ChatInputCommandInteraction
+    const { options, user } = interaction
 
     if (!queue || !queue.playing) { // @ts-ignore
-        return await client.Reply(`Command ${client.interaction?.options.getSubcommand()}`, "❌", "I don't find music on your channel sorry", true);
+        return await client.Reply(interaction, `Command ${interaction?.options.getSubcommand()}`, "❌", "I don't find music on your channel sorry", true);
     }
 
     const query = options.getString("name") as string
@@ -16,7 +16,7 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
         requestedBy: user,
     })
 
-    if (!tracks || !tracks.tracks.length) return await client.Reply("Music command", "❌", `I'm sorry but track **${query}** not found`, true);
+    if (!tracks || !tracks.tracks.length) return await client.Reply(interaction, "Music command", "❌", `I'm sorry but track **${query}** not found`, true);
 
     await queue.insert(tracks.tracks[0])
 
@@ -27,6 +27,6 @@ module.exports = async (client: Bot, queue: Queue): Promise<void> => {
     .setColor(client.config.color)
     .setURL(tracks.tracks[0].url)
 
-    await client.replyEmbed(embed)
+    await client.replyEmbed(interaction, embed)
 
 }

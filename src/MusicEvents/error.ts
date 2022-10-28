@@ -9,6 +9,8 @@ module.exports = {
 
         const guild = await client.config.Guild.get(queue.guild.id)
 
+        if (!guild?.errorChannel?.enable) return
+
         const channel = await client.channels.fetch(guild?.errorChannel?.id as string)
 
         if (!channel || !channel.isTextBased()) return;

@@ -3,7 +3,7 @@ import { Bot } from "src/Structures/Bot";
 
 module.exports = async (client: Bot) => {
 
-    const eventFiles = fs.readdirSync(`./dist/MusicEvents/`).filter(file => (file.endsWith('.js')));
+    const eventFiles = fs.readdirSync(`./dist/MusicEvents/`).filter(file => (file.endsWith(client.config.dev === "src" ? '.ts': '.js')));
 
     eventFiles.forEach(file => {
         const event = require(`../MusicEvents/${file}`);
