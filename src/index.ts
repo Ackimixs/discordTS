@@ -47,4 +47,4 @@ const validEnv = require('./utils/validEnv');
     await client.login(client.config.env.token)
 })()
 //TODO upgrade the random track like type of song
-//TODO spped (user - music createdAt)
+//TODO speed (user - music createdAt)
