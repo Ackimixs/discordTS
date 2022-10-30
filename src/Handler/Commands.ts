@@ -1,4 +1,4 @@
-import { ApplicationCommandDataResolvable } from "discord.js";
+import {ApplicationCommandDataResolvable, Events} from "discord.js";
 import * as fs from "fs";
 import ms from "ms";
 import { Bot } from "src/Structures/Bot";
@@ -12,24 +12,25 @@ module.exports = async (client: Bot) => {
     const pushCommand = async () => {
         const guilds = await client.guilds.fetch();
         for (let guild of guilds.values()) {
+            const full = client.config.Guild.get(guild.id)?.musicSystem;
             const CommandsArray: ApplicationCommandDataResolvable[] = []
             commandFiles.map(async (file) => {
                 const command = require(`../Commands/${file}`);
-                if (file === "music.js") {
-                    const full = client.config.Guild.get(guild.id)?.musicSystem;
-                    if (!full) {
-                        command.options = command.options.filter((option: any) => minMusicCommand.includes(option.name))
-                    }
+                const data = { ...command }
+                await client.commands.set(data.name, data);
+                if (file === "music.js" && !full) {
+                    data.options = data.options.filter((option: any) => minMusicCommand.includes(option.name))
                 }
-                await client.commands.set(command.name, command);
-                CommandsArray.push(command);
+                CommandsArray.push(data);
             })
-            client.guilds.fetch(guild.id).then(guild => guild.commands.set(CommandsArray));
+            client.guilds.fetch(guild.id).then(async guildData => {
+                await guildData.commands.set([...CommandsArray])
+            });
         }
-        await setInterval(async () => await pushCommand(), ms("60s"))
+        setInterval(async () => await pushCommand(), ms("60s"))
     }
 
-    client.once('ready', async () => {
+    client.once(Events.ClientReady, async () => {
         await pushCommand()
     })
 }

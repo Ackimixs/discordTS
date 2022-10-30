@@ -1,10 +1,10 @@
-import { CommandInteraction, InteractionType} from "discord.js"
+import {CommandInteraction, Events, InteractionType} from "discord.js"
 import { Bot } from "src/Structures/Bot";
 import {Command} from "../interface/command";
 
 
 module.exports = {
-    name: 'interactionCreate',
+    name: Events.InteractionCreate,
     once: false,
 
     async execute(interaction: CommandInteraction, client: Bot) {

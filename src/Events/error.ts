@@ -1,7 +1,8 @@
 import { Bot } from "src/Structures/Bot";
+import {Events} from "discord.js";
 
 module.exports = {
-    name: 'error',
+    name: Events.Error,
     once: false,
 
     async execute(error: Error, client: Bot) {

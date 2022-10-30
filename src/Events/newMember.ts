@@ -1,8 +1,8 @@
-import { GuildMember} from "discord.js"
+import {Events, GuildMember} from "discord.js"
 import { Bot } from "src/Structures/Bot";
 
 module.exports = {
-    name: 'guildMemberAdd',
+    name: Events.GuildMemberAdd,
     once: false,
 
     async execute(member: GuildMember, client: Bot) {

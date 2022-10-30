@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 module.exports = {
-    name: 'interactionCreate',
+    name: discord_js_1.Events.InteractionCreate,
     once: false,
     async execute(interaction, client) {
         const { user, guild, commandName, type } = interaction;

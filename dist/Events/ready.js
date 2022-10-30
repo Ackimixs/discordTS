@@ -6,7 +6,7 @@ const ms_1 = tslib_1.__importDefault(require("ms"));
 const Guild_1 = require("../Structures/db/Guild");
 const { createGuild } = require('../Structures/db/Guild');
 module.exports = {
-    name: "ready",
+    name: discord_js_1.Events.ClientReady,
     once: true,
     async execute(client) {
         const activityName = ["made with ♡", "trying to be correct", "inspired by Androz2091 discord bot", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct", "made with ♡", "trying to be correct"];

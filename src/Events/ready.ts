@@ -1,4 +1,4 @@
-import {ActivityType, PresenceStatusData} from "discord.js";
+import {ActivityType, Events, PresenceStatusData} from "discord.js";
 import { Bot } from "src/Structures/Bot";
 import ms from 'ms'
 import { GuildBot, GuildDB } from "../Structures/db/Schema/Guild";
@@ -6,7 +6,7 @@ import {getAllGuild} from "../Structures/db/Guild";
 const { createGuild } = require('../Structures/db/Guild')
 
 module.exports = {
-    name: "ready",
+    name: Events.ClientReady,
     once: true,
 
     async execute(client: Bot) {

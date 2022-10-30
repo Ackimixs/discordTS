@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
 module.exports = {
-    name: 'guildMemberAdd',
+    name: discord_js_1.Events.GuildMemberAdd,
     once: false,
     async execute(member, client) {
         const memberCoutChannelId = client.config?.Guild?.get(member.guild.id)?.memberCoutChannel?.id;
