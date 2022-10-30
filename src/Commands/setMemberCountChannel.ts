@@ -49,12 +49,14 @@ module.exports = {
 
         await updateMemberCountChannel(guildId as string, channelQuery, enable, client);
 
-        const memberCount = guild?.memberCount.toString()
 
-        if (!memberCount) return;
+        if (enable) {
+            const memberCount = guild?.memberCount.toString()
 
-        // @ts-ignore
-        await channelQuery.setName(`Member count - ${memberCount}`)
+            if (!memberCount) return;
+            // @ts-ignore
+            await channelQuery.setName(`Member count - ${memberCount}`)
+        }
 
         await client.Reply(interaction, "Set log", "✅", `The member count channel is now ${enable ? `set on : **${channelQuery}**` : '**disable**'}`, true)
     }
