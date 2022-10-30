@@ -5,7 +5,8 @@ import { GuildBot } from "../Structures/db/Schema/Guild";
 
 module.exports = {
     name: "music_mode",
-    description: "set the full music system or not",
+    //description: "set the full music system or not",
+    description: "DO NOT WORK",
     category: "Information",
     options: [
         {

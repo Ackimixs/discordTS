@@ -16,6 +16,8 @@ module.exports = async (client: Bot) => {
             const CommandsArray: ApplicationCommandDataResolvable[] = []
             commandFiles.map(async (file) => {
                 const command = require(`../Commands/${file}`);
+
+                //DO NOT WORK only json.parse(json.stringify) work but problem whit bigInt
                 const data = { ...command }
                 await client.commands.set(data.name, data);
                 if (file === "music.js" && !full) {
