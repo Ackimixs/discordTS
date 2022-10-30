@@ -15,7 +15,6 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
     const { tracks } = await Spotify.search(queryTrack + ' ' + queryArtist, {types: ["track"]})
 
     if (!tracks || !tracks[0]) return client.Reply(interaction, "track recherch", "❌", `I'm sorry but track **${queryTrack}** with artist **${queryArtist}** not found`, true);
-
     const musicUrl = tracks[0].externalURL.spotify
 
     const musicName = tracks[0].name

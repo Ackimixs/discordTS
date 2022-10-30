@@ -35,10 +35,12 @@ module.exports = {
             return client.Reply(interaction, "set log", "❌", "You have to input a channel if you want to set on the member count display", true);
         }
         await (0, Guild_1.updateMemberCountChannel)(guildId, channelQuery, enable, client);
-        const memberCount = guild?.memberCount.toString();
-        if (!memberCount)
-            return;
-        await channelQuery.setName(`Member count - ${memberCount}`);
+        if (enable) {
+            const memberCount = guild?.memberCount.toString();
+            if (!memberCount)
+                return;
+            await channelQuery.setName(`Member count - ${memberCount}`);
+        }
         await client.Reply(interaction, "Set log", "✅", `The member count channel is now ${enable ? `set on : **${channelQuery}**` : '**disable**'}`, true);
     }
 };
