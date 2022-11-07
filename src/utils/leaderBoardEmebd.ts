@@ -14,6 +14,11 @@ export const BlindtestLeaderboardEmbed = async (session: BlindtestSession, clien
 
     const sortedUser = new Map([...session.member.entries()].sort((a, b) => b[1].point - a[1].point).slice(0, 3));
 
+    if (!sortedUser.size) {
+        embed.setDescription(`Nobody play in the last session :/`);
+        return embed;
+    }
+
     let i = 1;
     for (let value of sortedUser.values()) {
         leaderboardUser += `${i} - **${value.tag}**\n`

@@ -8,7 +8,7 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
 
     const session = client.config.Guild.get(guild?.id as string)?.blindtestSession
 
-    if (!session || session.terminate) return client.Reply(interaction, 'vote', "❌", 'no blindtest session started on your server')
+    if (!session || session.terminate) return client.Reply(interaction, 'vote', "❌", 'no blindtest session started on your server', true)
 
     const artistName = options.getString("artist_name_vote") as string
     const trackName = options.getString("track_name_vote") as string
@@ -17,7 +17,6 @@ module.exports = async (client: Bot, interaction: ChatInputCommandInteraction) =
 
     if (!userData) {
         userData = createSessionUser(user, guild?.id as string);
-
         session.member.set(user.id, userData);
     }
 
